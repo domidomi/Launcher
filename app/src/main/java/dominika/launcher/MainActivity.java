@@ -1,12 +1,19 @@
 package dominika.launcher;
 
 import android.app.FragmentTransaction;
+import android.app.WallpaperManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 import dominika.launcher.R;
 import dominika.launcher.OneFragment;
@@ -25,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
         // Sets view to viewpager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
+
+        // Retrieve current system wallpaper and set it to the homescreen
+        setSystemWallpaper();
     }
 
     /*
@@ -63,6 +73,14 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
     }
 
 
+    // Gets current system wallpaper and sets it to the homescreen
+    public void setSystemWallpaper() {
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        final ImageView imageView = (ImageView) findViewById(R.id.homescreen_wallpaper);
+
+        imageView.setImageDrawable(wallpaperDrawable);
+    }
 
 
 }
