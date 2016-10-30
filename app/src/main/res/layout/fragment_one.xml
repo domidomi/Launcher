@@ -1,8 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dominika.launcher.OneFragment">
+    tools:context="dominika.launcher.OneFragment"
+    android:id="@+id/one_fragment">
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,4 +14,14 @@
         android:textStyle="bold"
         android:layout_centerInParent="true"/>
 
-</FrameLayout>
+    <Button
+        android:text="All apps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnAllApps"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:onClick="showAllApps" />
+
+</RelativeLayout>

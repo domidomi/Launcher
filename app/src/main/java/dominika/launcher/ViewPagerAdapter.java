@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Created by Domi on 23.10.2016.
+ *
+ * Creates a list of fragments in viewpager.
  */
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
