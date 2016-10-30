@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dominika.launcher.AllAppsGrid.AppsGridFragment"
+    android:id="@+id/apps_grid_layout">
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="dominika.launcher.AllAppsGrid.AppsGridFragment"
+        android:id="@+id/apps_grid" />
+
+
+</RelativeLayout>
