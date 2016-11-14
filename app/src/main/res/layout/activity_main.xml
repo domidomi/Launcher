@@ -5,7 +5,9 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dominika.launcher.MainActivity">
+    tools:context="dominika.launcher.MainActivity"
+    android:fitsSystemWindows="true">
+
 
     <ImageView
         android:layout_width="match_parent"
@@ -15,8 +17,11 @@
         android:id="@+id/homescreen_wallpaper"
         android:scaleType="centerCrop" />
 
+
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
