@@ -1,16 +1,28 @@
 package dominika.launcher;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.WallpaperManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -28,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Context context = getApplicationContext();
 
         // Sets view to viewpager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -35,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 
         // Retrieve current system wallpaper and set it to the homescreen
         setSystemWallpaper();
+        setTransparentBars(context);
+
     }
 
     /*
@@ -74,12 +89,19 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 
 
     // Gets current system wallpaper and sets it to the homescreen
-    public void setSystemWallpaper() {
+    private void setSystemWallpaper() {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
         final ImageView imageView = (ImageView) findViewById(R.id.homescreen_wallpaper);
 
         imageView.setImageDrawable(wallpaperDrawable);
+    }
+
+    private void setTransparentBars(Context context) {
+        Window w = getWindow(); // in Activity's onCreate() for instance
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+        
     }
 
 
