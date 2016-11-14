@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -35,12 +36,15 @@ import dominika.launcher.TwoFragment;
 public class MainActivity extends AppCompatActivity implements OneFragment.OnFragmentInteractionListener, TwoFragment.OnFragmentInteractionListener, ThreeFragment.OnFragmentInteractionListener  {
 
     private ViewPager viewPager;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Context context = getApplicationContext();
+
+        context = getApplicationContext();
+        ContextWrapper contextWrapper = new ContextWrapper(context);
 
         // Sets view to viewpager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -48,7 +52,13 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 
         // Retrieve current system wallpaper and set it to the homescreen
         setSystemWallpaper();
+
+        // Set status bar and navbar to transparent
         setTransparentBars(context);
+
+        // Calculate available screen size and set margins to avoid collapsing UI elements
+        setScreenSpace(contextWrapper);
+
 
     }
 
@@ -100,9 +110,11 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
     private void setTransparentBars(Context context) {
         Window w = getWindow(); // in Activity's onCreate() for instance
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-        
     }
 
+    public void setScreenSpace(ContextWrapper contextWrapper) {
+        ScreenSpace mScreenSpace = new ScreenSpace(this);
+        mScreenSpace.calculate(contextWrapper);
+    }
 
 }
