@@ -17,8 +17,11 @@ package dominika.launcher.AllAppsGrid;
  * limitations under the License.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +31,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -37,6 +43,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import dominika.launcher.BlurBuilder;
 
 /**
  * Based on {@link android.app.ListFragment} but adapted for {@link GridView}.
@@ -96,7 +104,7 @@ public class GridFragment extends Fragment {
 
         // ------------------------------------------------------------------
 
-        LinearLayout pframe = new LinearLayout(context);
+        final LinearLayout pframe = new LinearLayout(context);
         pframe.setId(INTERNAL_PROGRESS_CONTAINER_ID);
         pframe.setOrientation(LinearLayout.VERTICAL);
         pframe.setVisibility(View.GONE);
@@ -146,6 +154,10 @@ public class GridFragment extends Fragment {
 
         root.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+
+
+
 
         return root;
     }
