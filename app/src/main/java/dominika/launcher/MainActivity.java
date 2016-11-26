@@ -20,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 
         // Calculate available screen size and set margins to avoid collapsing UI elements
         setScreenSpace(contextWrapper);
-
 
     }
 
@@ -117,4 +117,30 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
         mScreenSpace.calculate(contextWrapper);
     }
 
+    public void setBlurredBackground() {
+        // for blur
+        final RelativeLayout layout = new RelativeLayout(context);
+
+        final View content = this.findViewById(android.R.id.content).getRootView();
+        if (content.getWidth() > 0) {
+            Bitmap image = BlurBuilder.blur(content);
+            layout.setBackgroundDrawable(new BitmapDrawable(this.getResources(), image));
+        } else {
+            content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Bitmap image = BlurBuilder.blur(content);
+                    layout.setBackgroundDrawable(new BitmapDrawable(content.getResources(), image));
+                }
+            });
+        }
+        View view = (View) layout;
+
+        setContentView(view);
+    }
+
+    @Override
+    public void setContentView(View view) {
+        super.setContentView(view);
+    }
 }

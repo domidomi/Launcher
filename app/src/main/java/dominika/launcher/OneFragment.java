@@ -79,6 +79,8 @@ public class OneFragment extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new AppsGridFragment();
                 replaceFragment(fragment);
+
+                //((MainActivity)getActivity()).setBlurredBackground();
             }
 
         });
@@ -89,6 +91,7 @@ public class OneFragment extends Fragment {
 
 
     public void replaceFragment(Fragment fragment) {
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
