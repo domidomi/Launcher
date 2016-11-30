@@ -89,7 +89,7 @@ public class InstalledAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> {
         if (code.equals("categories")) {
             for (int i=0; i < appsList.size(); i++) {
                 String category = getCategory(appsList.get(i));
-                appsList.get(i).setmCategory(category)
+                appsList.get(i).setmCategory(category);
             }
         }
 
