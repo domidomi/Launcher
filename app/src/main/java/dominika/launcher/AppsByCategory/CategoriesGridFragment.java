@@ -1,23 +1,29 @@
-package dominika.launcher.AllAppsGrid;
+package dominika.launcher.AppsByCategory;
 
-import android.support.v4.app.LoaderManager;
-
+import android.app.LoaderManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 
 import java.util.ArrayList;
 
+import dominika.launcher.AllAppsGrid.AppListAdapter;
+import dominika.launcher.AllAppsGrid.AppModel;
+import dominika.launcher.AllAppsGrid.GridFragment;
+import dominika.launcher.AllAppsGrid.InstalledAppsLoader;
+
 /**
- * Created by Domi on 28.10.2016.
+ * Created by Domi on 29.11.2016.
  */
 
-public class AppsGridFragment extends GridFragment implements LoaderManager.LoaderCallbacks<ArrayList<AppModel>> {
+public class CategoriesGridFragment extends GridFragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<ArrayList<AppModel>> {
 
     AppListAdapter mAppListAdapter;
-    String code = "allApps";
+    String code = "categories";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -37,7 +43,13 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
 
     @Override
     public Loader<ArrayList<AppModel>> onCreateLoader(int id, Bundle bundle) {
+
+
         return new InstalledAppsLoader(getActivity(), code);
+        /*for (int i=0; i < appsList.size(); i++) {
+            Log.d("Apki","i kategorie");
+            Log.d(appsList.get(i).getLabel(), appsList.get(i).getmCategory());
+        }*/
     }
 
     @Override

@@ -3,6 +3,7 @@ package dominika.launcher.AllAppsGrid;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,17 +63,27 @@ public class AppListAdapter extends ArrayAdapter<AppModel> {
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         View view;
 
-        if (convertView == null) {
-            view = mLayoutInflater.inflate(R.layout.list_item_icon_text, parent, false);
-        } else {
-            view = convertView;
-        }
 
-        AppModel item = getItem(position);
-        ((ImageView)view.findViewById(R.id.icon)).setImageDrawable(item.getIcon());
-        ((TextView)view.findViewById(R.id.text)).setText(item.getLabel());
+            if (convertView == null) {
+                view = mLayoutInflater.inflate(R.layout.list_item_icon_text, parent, false);
+            } else {
+                view = convertView;
+            }
 
-        return view;
+            AppModel item = getItem(position);
+
+            if (item.getIcon() == null) {
+                Log.d("Icon", " puste");
+
+                return null;
+            }
+            ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(item.getIcon());
+
+
+            ((TextView) view.findViewById(R.id.text)).setText(item.getLabel());
+
+            return view;
+
     }
 
 }
