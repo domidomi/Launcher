@@ -2,9 +2,15 @@ package dominika.launcher.AllAppsGrid;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.io.File;
+
+import dominika.launcher.R;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Domi on 25.10.2016.
@@ -21,6 +27,8 @@ public class AppModel {
 
     private boolean mMounted;
     private final File mApkFile;
+
+    private String mCategory;
 
     public AppModel(Context context, ApplicationInfo info) {
         mContext = context;
@@ -83,5 +91,11 @@ public class AppModel {
         }
     }
 
+    public String getmCategory() {
+        return mCategory;
+    }
 
+    public void setmCategory(String mCategory) {
+        this.mCategory = mCategory;
+    }
 }

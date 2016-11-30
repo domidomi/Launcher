@@ -4,9 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import dominika.launcher.AppsByCategory.CategoriesGridFragment;
 
 
 /**
@@ -63,8 +68,35 @@ public class TwoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_two, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_two, container, false);
+
+        // Listen to button which calls all apps
+        Button mBtnAllApps = (Button) view.findViewById(R.id.btnAppsByCategory);
+        mBtnAllApps.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Fragment fragment = new CategoriesGridFragment();
+                replaceFragment(fragment);
+                //new GetCategories(getActivity()).loadInBackground();
+            }
+
+        });
+
+        return view;
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.two_fragment, fragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

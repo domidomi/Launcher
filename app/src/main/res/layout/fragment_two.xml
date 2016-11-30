@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/two_fragment"
     tools:context="dominika.launcher.TwoFragment">
 
     <TextView
@@ -11,5 +12,14 @@
         android:textSize="40dp"
         android:textStyle="bold"
         android:layout_centerInParent="true"/>
+
+    <Button
+        android:text="Apps by category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnAppsByCategory"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp" />
 
 </RelativeLayout>

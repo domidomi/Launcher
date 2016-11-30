@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import dominika.launcher.AllAppsGrid.AppModel;
+import dominika.launcher.HttpHelper;
 
 /**
  * Created by Domi on 25.10.2016.
@@ -24,49 +28,87 @@ import dominika.launcher.AllAppsGrid.AppModel;
 
 public class InstalledAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> {
 
-    ArrayList<AppModel> mAppsToDeliver;
+    public ArrayList<AppModel> mAppsToDeliver;
+
+    /*
+    * Code may be:
+    * - categories
+    * - allApps
+    * */
+    String code;
 
     final PackageManager mPackageManager;
     PackageIntentReceiver mPackageController;
 
-    public InstalledAppsLoader(Context context) {
+    public InstalledAppsLoader(Context context, String code) {
         super(context);
-
+        this.code = code;
         mPackageManager = context.getPackageManager();
     }
 
     @Override
     public ArrayList<AppModel> loadInBackground() {
 
-        // Get list of installed apps
-        List<ApplicationInfo> allApps = mPackageManager.getInstalledApplications(0);
+                // Get list of installed apps
+                List<ApplicationInfo> allApps = mPackageManager.getInstalledApplications(0);
 
-        if (allApps == null) {
-            allApps = new ArrayList<ApplicationInfo>();
-        }
+                if (allApps == null) {
+                    allApps = new ArrayList<ApplicationInfo>();
+                }
 
-        final Context mContext = getContext();
+                final Context mContext = getContext();
 
-        // Load each app and its label
-        // Create a list of apps objects equal to number of installed apps
-        ArrayList<AppModel> appsList = new ArrayList<AppModel>(allApps.size());
+                // Load each app and its label
+                // Create a list of apps objects equal to number of installed apps
+                ArrayList<AppModel> appsList = new ArrayList<AppModel>(allApps.size());
 
-        for (int i=0; i < allApps.size(); i++) {
-            String appPackage = allApps.get(i).packageName;
+                for (int i=0; i < allApps.size(); i++) {
+                    String appPackage = allApps.get(i).packageName;
 
-            // Get only apps which can be launched by user
-            if (mContext.getPackageManager().getLaunchIntentForPackage(appPackage) != null ) {
-                // Copy app data to new app object
-                AppModel app = new AppModel(mContext, allApps.get(i));
-                app.loadLabel(mContext);
-                appsList.add(app);
-            }
+                    // Get only apps which can be launched by user
+                    if (mContext.getPackageManager().getLaunchIntentForPackage(appPackage) != null ) {
+                        // Copy app data to new app object
+                        AppModel app = new AppModel(mContext, allApps.get(i));
+                        app.loadLabel(mContext);
+                        appsList.add(app);
+                    }
 
         }
 
         Collections.sort(appsList, ALPHA_COMPARATOR);
 
+        Log.d("Ile apek? : ", Integer.toString(appsList.size()));
+
+        for (int i=0; i < appsList.size(); i++) {
+
+            Log.d("Package nr ", Integer.toString(i));
+            Log.d("Nazwa: ", appsList.get(i).getApplicationPackageName());
+            Log.d("Label: ", appsList.get(i).getLabel());
+        }
+
+        if (code.equals("categories")) {
+            for (int i=0; i < appsList.size(); i++) {
+                String category = getCategory(appsList.get(i));
+                appsList.get(i).setmCategory(category)
+            }
+        }
+
+
         return appsList;
+    }
+
+    private String getCategory(AppModel app) {
+        HttpHelper help = new HttpHelper();
+        String category = "null";
+        try {
+            category = String.valueOf(help.execute(new URL("https://play.google.com/store/apps/details?id=" + app.getAppInfo().packageName + "&hl=en")));
+            return category;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            Log.d("Catch: ", "MalformedURLException");
+        }
+        return category;
+
     }
 
     public void deliverResult(ArrayList<AppModel> appsList) {
