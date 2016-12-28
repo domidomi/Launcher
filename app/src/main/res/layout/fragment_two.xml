@@ -14,43 +14,12 @@
         android:layout_centerInParent="true"/>
 
     <Button
-        android:text="UTILITY"
+        android:text="Apps by category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnCategoryUtility"
+        android:id="@+id/btnAppsByCategory"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:text="SOCIAL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnCategorySocial"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/btnCategoryUtility" />
-
-    <Button
-        android:text="MULTIMEDIA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnCategoryMultimedia"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/btnCategorySocial" />
-
-    <Button
-        android:text="HOBBY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnCategoryHobby"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:text="GAMES"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnCategoryGames"
-        android:layout_above="@+id/btnCategoryUtility"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp" />
 
 </RelativeLayout>

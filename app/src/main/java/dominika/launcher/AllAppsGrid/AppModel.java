@@ -78,7 +78,7 @@ public class AppModel {
         return mContext.getResources().getDrawable(android.R.drawable.sym_def_app_icon);
     }
 
-    public void loadLabel(Context context) {
+    void loadLabel(Context context) {
         if (mAppLabel == null || !mMounted) {
             if (!mApkFile.exists()) {
                 mMounted = false;

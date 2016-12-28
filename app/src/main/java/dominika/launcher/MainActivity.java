@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import dominika.launcher.AppsByCategory.CategoryAppsModel;
 import dominika.launcher.R;
 import dominika.launcher.OneFragment;
 import dominika.launcher.ThreeFragment;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 
     private ViewPager viewPager;
     private Context context;
-    public String categ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +59,6 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
         // Calculate available screen size and set margins to avoid collapsing UI elements
         setScreenSpace(contextWrapper);
 
-        CategoryAppsModel mCategoryAppsModel = new CategoryAppsModel();
-
-        mCategoryAppsModel.showListOfCategories();
 
     }
 
