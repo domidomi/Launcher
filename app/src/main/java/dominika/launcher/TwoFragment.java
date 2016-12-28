@@ -28,6 +28,8 @@ public class TwoFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    public static String clickedFolder;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -72,18 +74,65 @@ public class TwoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_two, container, false);
         // Inflate the layout for this fragment
 
-        // Listen to button which calls all apps
-        Button mBtnAllApps = (Button) view.findViewById(R.id.btnAppsByCategory);
-        mBtnAllApps.setOnClickListener(new View.OnClickListener() {
+        // Listen to button which calls category
+        Button mBtnGames = (Button) view.findViewById(R.id.btnCategoryGames);
+        mBtnGames.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Fragment fragment = new CategoriesGridFragment();
-                replaceFragment(fragment);
-                //new GetCategories(getActivity()).loadInBackground();
+                loadFolder("games");
+            }
+
+        });
+
+        Button mBtnHobby = (Button) view.findViewById(R.id.btnCategoryHobby);
+        mBtnHobby.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("hobby");
+            }
+
+        });
+
+        Button mBtnMultimedia = (Button) view.findViewById(R.id.btnCategoryMultimedia);
+        mBtnMultimedia.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("multimedia");
+            }
+
+        });
+
+        Button mBtnSocial = (Button) view.findViewById(R.id.btnCategorySocial);
+        mBtnSocial.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("social");
+            }
+
+        });
+
+        Button mBtnUtility = (Button) view.findViewById(R.id.btnCategoryUtility);
+        mBtnUtility.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("utility");
             }
 
         });
 
         return view;
+    }
+
+    private void loadFolder(String category) {
+        /*switch (category) {
+            case 1: lap(); break;
+            case 2: sip(); break;
+            case 3: lap(); break;
+            case 4: sip(); break;
+            case 5: quaff(); break;
+        }*/
+
+        clickedFolder = category;
+        Fragment fragment = new CategoriesGridFragment();
+        replaceFragment(fragment);
+
+
+
     }
 
     public void replaceFragment(Fragment fragment) {
