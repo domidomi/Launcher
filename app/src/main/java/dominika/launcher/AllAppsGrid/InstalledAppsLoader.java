@@ -5,15 +5,21 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import dominika.launcher.AllAppsGrid.AppModel;
+import dominika.launcher.AppsByCategory.AsyncResponse;
+import dominika.launcher.AppsByCategory.CategoryAppsModel;
+import dominika.launcher.AppsByCategory.CategoryHttpHelper;
+import dominika.launcher.TwoFragment;
 
 /**
  * Created by Domi on 25.10.2016.
@@ -22,16 +28,28 @@ import dominika.launcher.AllAppsGrid.AppModel;
  * Creates a list of apps from all installed apps on the system using application model class.
  */
 
-public class InstalledAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> {
+public class InstalledAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> implements AsyncResponse{
 
-    ArrayList<AppModel> mAppsToDeliver;
+    public ArrayList<AppModel> mAppsToDeliver;
+
+    /*
+    * Code may be:
+    * - categories
+    * - allApps
+    * */
+    String code;
+    String clickedFolder;
 
     final PackageManager mPackageManager;
     PackageIntentReceiver mPackageController;
 
-    public InstalledAppsLoader(Context context) {
-        super(context);
+    ArrayList<AppModel> appsList;
+    ArrayList<AppModel> appsFromCategory;
 
+    public InstalledAppsLoader(Context context, String code) {
+        super(context);
+        this.code = code;
+        this.clickedFolder = TwoFragment.clickedFolder;
         mPackageManager = context.getPackageManager();
     }
 
@@ -49,7 +67,8 @@ public class InstalledAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> {
 
         // Load each app and its label
         // Create a list of apps objects equal to number of installed apps
-        ArrayList<AppModel> appsList = new ArrayList<AppModel>(allApps.size());
+        appsList = new ArrayList<AppModel>(allApps.size());
+        appsFromCategory = new ArrayList<AppModel>();
 
         for (int i=0; i < allApps.size(); i++) {
             String appPackage = allApps.get(i).packageName;
@@ -66,32 +85,157 @@ public class InstalledAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> {
 
         Collections.sort(appsList, ALPHA_COMPARATOR);
 
+        Log.d("Ile apek? : ", Integer.toString(appsList.size()));
+
+        // List all apps (just for information)
+        for (int i=0; i < appsList.size(); i++) {
+
+            Log.d("Package nr ", Integer.toString(i));
+            Log.d("Nazwa: ", appsList.get(i).getApplicationPackageName());
+            Log.d("Label: ", appsList.get(i).getLabel());
+        }
+
+        /*// If we want to retrieve app by category (not all apps) do:
+        if (code.equals("categories")) {
+            Log.d("Loading of categories: ", "STARTED");
+            searchForAllCategories(appsList);
+        }*/
         return appsList;
     }
 
-    public void deliverResult(ArrayList<AppModel> appsList) {
+    public void setAppsList(ArrayList<AppModel> appsList) {
+        this.appsList = appsList;
+    }
+
+    public ArrayList<AppModel> getAppsList() {
+        return appsList;
+    }
+
+
+
+    private void searchForAllCategories() {
+
+        // Creating helper and passing all apps list
+        CategoryHttpHelper helper = new CategoryHttpHelper(this);
+
+        helper.delegate = this;
+
+        // Execute retrieving a category for each app
+        helper.execute();
+    }
+
+    @Override
+    public void processFinish(String output){
+        //Here you will receive the result fired from async class
+        //of onPostExecute(result) method.
+
+        Log.d("Loading of categories: ", "DONE");
+        Log.d("Filtering of apps: ", "STARTED");
+        filterApps(appsList);
 
         // If loader was stopped (interrupted) - don't deliver anything
         if (isReset()) {
-            if (appsList != null) {
-                onReleaseResources(appsList);
+            if (appsFromCategory != null) {
+                onReleaseResources(appsFromCategory);
             }
         }
 
-        ArrayList<AppModel> allApps = appsList;
-        mAppsToDeliver = appsList;
+        ArrayList<AppModel> allApps = appsFromCategory;
+        mAppsToDeliver = appsFromCategory;
 
         if (isStarted()) {
             // If result is already avaiable deliver it.
-            super.deliverResult(appsList);
+            super.deliverResult(appsFromCategory);
         }
 
         // At this point we can release the resources associated with
         // 'allApps' if needed; now that the new result is delivered we
         // know that it is no longer in use.
         if (allApps != null) {
-            onReleaseResources(allApps);
+            onReleaseResources(appsFromCategory);
         }
+    }
+
+    private void filterApps(ArrayList<AppModel> appsList) {
+        // Get list of all categories
+        ArrayList<List<String>> listOfCategories = new CategoryAppsModel().getListOfCategories();
+
+        // Get list of categories names
+        String[] categoriesNames = new CategoryAppsModel().getCategoriesNames();
+
+        ArrayList<AppModel> matchingApps = new ArrayList<AppModel>();
+
+        Log.d("Cliked folder: ", clickedFolder);
+
+        // For each category
+        for (int i=0; i<listOfCategories.size(); i++) {
+            // If category name is the same as category of clicked folder
+            if(categoriesNames[i].toUpperCase().equals(clickedFolder.toUpperCase())){
+                // Now we are searching through all apps - which apps belong to that folder
+                for (int j=0; j<appsList.size(); j++) {
+                    // Get app category
+                    String appCategory = appsList.get(j).getmCategory();
+                    // If that category is in clicked folder array of categories add it to the list
+                    if (listOfCategories.get(i).contains(appCategory)) {
+                        matchingApps.add(appsList.get(j));
+                        Log.d("Matching app category: ", appsList.get(j).getmCategory());
+                    }
+                }
+            } else {
+                Log.d("Category name is: ", categoriesNames[i].toUpperCase());
+            }
+        }
+
+        setAppsFromCategory(matchingApps);
+
+        Log.d("Filtering of apps: ", "DONE");
+        for (int i=0; i<appsFromCategory.size(); i++) {
+            Log.d("Apps from category: ", appsFromCategory.get(i).getLabel());
+        }
+
+    }
+
+    public ArrayList<AppModel> getAppsFromCategory() {
+        return appsFromCategory;
+    }
+
+    public void setAppsFromCategory(ArrayList<AppModel> appsFromCategory) {
+        this.appsFromCategory = appsFromCategory;
+    }
+
+
+
+    public void deliverResult(ArrayList<AppModel> appsList) {
+
+        // If we want to retrieve app by category (not all apps) do:
+        if (code.equals("categories")) {
+            Log.d("Loading of categories: ", "STARTED");
+            searchForAllCategories();
+        } else {
+            // If loader was stopped (interrupted) - don't deliver anything
+            if (isReset()) {
+                if (appsList != null) {
+                    onReleaseResources(appsList);
+                }
+            }
+
+            ArrayList<AppModel> allApps = appsList;
+            mAppsToDeliver = appsList;
+
+            if (isStarted()) {
+                // If result is already avaiable deliver it.
+                super.deliverResult(appsList);
+            }
+
+            // At this point we can release the resources associated with
+            // 'allApps' if needed; now that the new result is delivered we
+            // know that it is no longer in use.
+            if (allApps != null) {
+                onReleaseResources(allApps);
+            }
+
+        }
+
     }
 
 

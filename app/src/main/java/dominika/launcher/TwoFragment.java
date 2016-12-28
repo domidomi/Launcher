@@ -4,9 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import dominika.launcher.AppsByCategory.CategoriesGridFragment;
 
 
 /**
@@ -22,6 +27,8 @@ public class TwoFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    public static String clickedFolder;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -63,8 +70,82 @@ public class TwoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_two, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_two, container, false);
+
+        // Listen to button which calls category
+        Button mBtnGames = (Button) view.findViewById(R.id.btnCategoryGames);
+        mBtnGames.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("games");
+            }
+
+        });
+
+        Button mBtnHobby = (Button) view.findViewById(R.id.btnCategoryHobby);
+        mBtnHobby.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("hobby");
+            }
+
+        });
+
+        Button mBtnMultimedia = (Button) view.findViewById(R.id.btnCategoryMultimedia);
+        mBtnMultimedia.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("multimedia");
+            }
+
+        });
+
+        Button mBtnSocial = (Button) view.findViewById(R.id.btnCategorySocial);
+        mBtnSocial.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("social");
+            }
+
+        });
+
+        Button mBtnUtility = (Button) view.findViewById(R.id.btnCategoryUtility);
+        mBtnUtility.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("utility");
+            }
+
+        });
+
+        return view;
+    }
+
+    private void loadFolder(String category) {
+        /*switch (category) {
+            case 1: lap(); break;
+            case 2: sip(); break;
+            case 3: lap(); break;
+            case 4: sip(); break;
+            case 5: quaff(); break;
+        }*/
+
+        clickedFolder = category;
+        Fragment fragment = new CategoriesGridFragment();
+        replaceFragment(fragment);
+
+
+
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.two_fragment, fragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

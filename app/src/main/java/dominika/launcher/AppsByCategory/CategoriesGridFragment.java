@@ -1,23 +1,33 @@
-package dominika.launcher.AllAppsGrid;
+package dominika.launcher.AppsByCategory;
 
-import android.support.v4.app.LoaderManager;
-
+import android.app.LoaderManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import dominika.launcher.AllAppsGrid.AppListAdapter;
+import dominika.launcher.AllAppsGrid.AppModel;
+import dominika.launcher.AllAppsGrid.GridFragment;
+import dominika.launcher.AllAppsGrid.InstalledAppsLoader;
+import dominika.launcher.MainActivity;
+import dominika.launcher.TwoFragment;
 
 /**
- * Created by Domi on 28.10.2016.
+ * Created by Domi on 29.11.2016.
  */
 
-public class AppsGridFragment extends GridFragment implements LoaderManager.LoaderCallbacks<ArrayList<AppModel>> {
+public class CategoriesGridFragment extends GridFragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<ArrayList<AppModel>> {
 
     AppListAdapter mAppListAdapter;
-    String code = "allApps";
+    String code = "categories";
+    int category;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -30,18 +40,38 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
 
         // till the data is loaded display a spinner
         setGridShown(false);
+        Log.d("Wchodzę do: ", " getLoaderManager");
 
+        //category = savedInstanceState.getInt("category", 0);
+
+        startLoading();
+    }
+
+    public void startLoading() {
         // create the loader to load the apps list in background
+        Log.d("Przed, category ", Integer.toString(category));
         getLoaderManager().initLoader(0, null, this);
     }
 
+
     @Override
     public Loader<ArrayList<AppModel>> onCreateLoader(int id, Bundle bundle) {
+        Log.d("Wchodzę do: ", " onCreateLoader");
+
+
+        // Load all installed apps
         return new InstalledAppsLoader(getActivity(), code);
+        /*for (int i=0; i < appsList.size(); i++) {
+            Log.d("Apki","i kategorie");
+            Log.d(appsList.get(i).getLabel(), appsList.get(i).getmCategory());
+        }*/
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<AppModel>> loader, ArrayList<AppModel> apps) {
+
+
+
         mAppListAdapter.setData(apps);
 
         if (isResumed()) {
@@ -68,5 +98,11 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
         }
     }
 
+    public int getCategory() {
+        return category;
+    }
 
+    public void setCategory(int category) {
+        this.category = category;
+    }
 }

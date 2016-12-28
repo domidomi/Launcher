@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -257,11 +258,11 @@ public class GridFragment extends Fragment {
         if (mStandardEmptyView == null) {
             throw new IllegalStateException("Can't be used with a custom content view");
         }
-        mStandardEmptyView.setText(text);
+        mStandardEmptyView.setText(""+text);
         if (mEmptyText == null) {
             mGrid.setEmptyView(mStandardEmptyView);
         }
-        mEmptyText = text;
+        mEmptyText = ""+text;
     }
 
     /**
@@ -377,7 +378,7 @@ public class GridFragment extends Fragment {
             if (mEmptyView != null) {
                 mGrid.setEmptyView(mEmptyView);
             } else if (mEmptyText != null) {
-                mStandardEmptyView.setText(mEmptyText);
+                mStandardEmptyView.setText(""+mEmptyText);
                 mGrid.setEmptyView(mStandardEmptyView);
             }
         }

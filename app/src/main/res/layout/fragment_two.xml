@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/two_fragment"
     tools:context="dominika.launcher.TwoFragment">
 
     <TextView
@@ -11,5 +12,45 @@
         android:textSize="40dp"
         android:textStyle="bold"
         android:layout_centerInParent="true"/>
+
+    <Button
+        android:text="UTILITY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryUtility"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="SOCIAL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategorySocial"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/btnCategoryUtility" />
+
+    <Button
+        android:text="MULTIMEDIA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryMultimedia"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/btnCategorySocial" />
+
+    <Button
+        android:text="HOBBY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryHobby"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="GAMES"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryGames"
+        android:layout_above="@+id/btnCategoryUtility"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
