@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dominika.launcher.PaintNote.PaintNoteFragment"
+    android:fitsSystemWindows="true"
+    android:id="@+id/paint_note_fragment">
+
+
+    <!--<dominika.launcher.PaintNote.DrawView
+        android:id="@+id/drawing_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="3dp"
+        android:background="@android:color/transparent" />
+-->
+    <!--<ImageView
+        android:id="@+id/drawImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFFFF"
+        android:src="@drawable/icon_default"/>-->
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drawing_layout"
+        android:background="#AA000000" >
+    </RelativeLayout>
+
+    <Button
+        android:text="Clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnClearDrawing"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="18dp" />
+
+    <Button
+        android:text="Exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnExitDrawing"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="15dp" />
+
+</RelativeLayout>
