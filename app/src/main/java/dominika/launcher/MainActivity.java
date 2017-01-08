@@ -1,42 +1,27 @@
 package dominika.launcher;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import dominika.launcher.AppsByCategory.CategoryAppsModel;
-import dominika.launcher.R;
-import dominika.launcher.OneFragment;
-import dominika.launcher.ThreeFragment;
-import dominika.launcher.TwoFragment;
+import dominika.launcher.PaintNote.PaintNoteFragment;
 
-public class MainActivity extends AppCompatActivity implements OneFragment.OnFragmentInteractionListener, TwoFragment.OnFragmentInteractionListener, ThreeFragment.OnFragmentInteractionListener  {
+public class MainActivity extends AppCompatActivity implements PaintNoteFragment.OnFragmentInteractionListener, OneFragment.OnFragmentInteractionListener, TwoFragment.OnFragmentInteractionListener, ThreeFragment.OnFragmentInteractionListener  {
 
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private Context context;
     public String categ;
 
@@ -49,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
         ContextWrapper contextWrapper = new ContextWrapper(context);
 
         // Sets view to viewpager
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         // Retrieve current system wallpaper and set it to the homescreen
@@ -62,20 +47,40 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
         setScreenSpace(contextWrapper);
 
         CategoryAppsModel mCategoryAppsModel = new CategoryAppsModel();
-
         mCategoryAppsModel.showListOfCategories();
+
 
     }
 
     /*
     * Sets up a viewpager - adds fragments to the adapter.
     * */
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+    private void setupViewPager(final ViewPager viewPager) {
+        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new PaintNoteFragment(), "PAINT");
         adapter.addFragment(new OneFragment(), "ONE");
         adapter.addFragment(new TwoFragment(), "TWO");
         adapter.addFragment(new ThreeFragment(), "THREE");
         viewPager.setAdapter(adapter);
+
+        // Set main fragment (one fragment) to be shown when user launch launcher
+        viewPager.setCurrentItem(1);
+
+        /*viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (viewPager.getCurrentItem() == 0) {
+                    Log.d("asd", "24341");
+
+                    return true;
+
+                   *//* if(event.getAction() == MotionEvent.ACTION_MOVE){
+
+                    }*//*
+                }
+                return false;
+            }
+        });*/
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -122,4 +127,7 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
         mScreenSpace.calculate(contextWrapper);
     }
 
+    public CustomViewPager getViewPager() {
+        return viewPager;
+    }
 }
