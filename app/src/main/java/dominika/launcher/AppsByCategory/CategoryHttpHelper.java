@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import dominika.launcher.AllAppsGrid.AppModel;
+import dominika.launcher.AppsByCategory.CategoriesAppsLoader;
 import dominika.launcher.AllAppsGrid.InstalledAppsLoader;
 
 import static android.content.ContentValues.TAG;
@@ -32,7 +33,7 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
 
     ArrayList<AppModel> appsList;
 
-    InstalledAppsLoader loader;
+    CategoriesAppsLoader loader;
 
     public AsyncResponse delegate = null;
 
@@ -42,7 +43,7 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
 
     }*/
 
-    public CategoryHttpHelper(InstalledAppsLoader loader) {
+    public CategoryHttpHelper(CategoriesAppsLoader loader) {
         this.loader = loader;
 
     }
