@@ -14,6 +14,7 @@ import java.util.List;
 
 import dominika.launcher.AllAppsGrid.AppListAdapter;
 import dominika.launcher.AllAppsGrid.AppModel;
+import dominika.launcher.AppsByCategory.CategoriesAppsLoader;
 import dominika.launcher.AllAppsGrid.GridFragment;
 import dominika.launcher.AllAppsGrid.InstalledAppsLoader;
 import dominika.launcher.MainActivity;
@@ -60,7 +61,7 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
 
 
         // Load all installed apps
-        return new InstalledAppsLoader(getActivity(), code);
+        return new CategoriesAppsLoader(getActivity(), code);
         /*for (int i=0; i < appsList.size(); i++) {
             Log.d("Apki","i kategorie");
             Log.d(appsList.get(i).getLabel(), appsList.get(i).getmCategory());

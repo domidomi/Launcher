@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class AppsGridFragment extends GridFragment implements LoaderManager.LoaderCallbacks<ArrayList<AppModel>> {
 
     AppListAdapter mAppListAdapter;
-    String code = "allApps";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
 
     @Override
     public Loader<ArrayList<AppModel>> onCreateLoader(int id, Bundle bundle) {
-        return new InstalledAppsLoader(getActivity(), code);
+        return new InstalledAppsLoader(getActivity());
     }
 
     @Override
