@@ -31,18 +31,18 @@
         android:background="#AA000000" >
     </RelativeLayout>
 
-    <Button
-        android:text="Clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:background="@drawable/trash_icon"
+        android:layout_width="@dimen/icon_size_dp"
+        android:layout_height="@dimen/icon_size_dp"
         android:id="@+id/btnClearDrawing"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="18dp" />
+        android:layout_marginBottom="15dp" />
 
-    <Button
-        android:text="Exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:background="@drawable/arrow_right_icon"
+        android:layout_width="@dimen/icon_size_dp"
+        android:layout_height="@dimen/icon_size_dp"
         android:id="@+id/btnExitDrawing"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

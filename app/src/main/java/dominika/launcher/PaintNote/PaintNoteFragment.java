@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -146,8 +147,8 @@ public class PaintNoteFragment extends Fragment {
     }
 
     public void setButtons(View view) {
-        Button btnClearDrawing = (Button) view.findViewById(R.id.btnClearDrawing);
-        Button btnExitDrawing = (Button) view.findViewById(R.id.btnExitDrawing);
+        ImageButton btnClearDrawing = (ImageButton) view.findViewById(R.id.btnClearDrawing);
+        ImageButton btnExitDrawing = (ImageButton) view.findViewById(R.id.btnExitDrawing);
 
         btnClearDrawing.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import dominika.launcher.AppsByCategory.CategoriesGridFragment;
 
@@ -71,11 +73,11 @@ public class TwoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_two, container, false);
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_two, container, false);
 
         // Listen to button which calls category
-        Button mBtnGames = (Button) view.findViewById(R.id.btnCategoryGames);
+        LinearLayout mBtnGames = (LinearLayout) view.findViewById(R.id.btnCategoryGames);
         mBtnGames.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 loadFolder("games");
@@ -83,7 +85,7 @@ public class TwoFragment extends Fragment {
 
         });
 
-        Button mBtnHobby = (Button) view.findViewById(R.id.btnCategoryHobby);
+        LinearLayout mBtnHobby = (LinearLayout) view.findViewById(R.id.btnCategoryHobby);
         mBtnHobby.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 loadFolder("hobby");
@@ -91,7 +93,7 @@ public class TwoFragment extends Fragment {
 
         });
 
-        Button mBtnMultimedia = (Button) view.findViewById(R.id.btnCategoryMultimedia);
+        LinearLayout mBtnMultimedia = (LinearLayout) view.findViewById(R.id.btnCategoryMultimedia);
         mBtnMultimedia.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 loadFolder("multimedia");
@@ -99,7 +101,7 @@ public class TwoFragment extends Fragment {
 
         });
 
-        Button mBtnSocial = (Button) view.findViewById(R.id.btnCategorySocial);
+        LinearLayout mBtnSocial = (LinearLayout) view.findViewById(R.id.btnCategorySocial);
         mBtnSocial.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 loadFolder("social");
@@ -107,7 +109,7 @@ public class TwoFragment extends Fragment {
 
         });
 
-        Button mBtnUtility = (Button) view.findViewById(R.id.btnCategoryUtility);
+        LinearLayout mBtnUtility = (LinearLayout) view.findViewById(R.id.btnCategoryUtility);
         mBtnUtility.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 loadFolder("utility");
@@ -119,20 +121,9 @@ public class TwoFragment extends Fragment {
     }
 
     private void loadFolder(String category) {
-        /*switch (category) {
-            case 1: lap(); break;
-            case 2: sip(); break;
-            case 3: lap(); break;
-            case 4: sip(); break;
-            case 5: quaff(); break;
-        }*/
-
         clickedFolder = category;
         Fragment fragment = new CategoriesGridFragment();
         replaceFragment(fragment);
-
-
-
     }
 
     public void replaceFragment(Fragment fragment) {
