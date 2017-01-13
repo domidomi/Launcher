@@ -1,8 +1,13 @@
 package dominika.launcher;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.AlarmClock;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Gallery;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextClock;
+import android.widget.Toast;
 
 import dominika.launcher.AllAppsGrid.AppsGridFragment;
 
@@ -74,7 +84,34 @@ public class OneFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_one, container, false);
 
         // Listen to button which calls all apps
-        Button mBtnAllApps = (Button) view.findViewById(R.id.btnAllApps);
+        ImageButton mBtnShowSettings = (ImageButton) view.findViewById(R.id.btnShowSettings);
+        ImageButton mBtnShowDialer = (ImageButton) view.findViewById(R.id.btnShowDialer);
+        ImageButton mBtnAllApps = (ImageButton) view.findViewById(R.id.btnAllApps);
+        ImageButton mBtnShowMessenger = (ImageButton) view.findViewById(R.id.btnShowMessenger);
+        ImageButton mBtnShowGallery = (ImageButton) view.findViewById(R.id.btnShowGallery);
+
+        LinearLayout mDateTimeWidget = (LinearLayout) view.findViewById(R.id.dateTimeWidget);
+
+        mBtnShowSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent SettingsIntent = new Intent(Settings.ACTION_SETTINGS);
+                startActivity(SettingsIntent);
+            }
+        });
+
+        mBtnShowDialer.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent DialIntent = new Intent(Intent.ACTION_DIAL);
+
+                try {
+                    startActivity(DialIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "Please Install Dialer", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
         mBtnAllApps.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Fragment fragment = new AppsGridFragment();
@@ -82,6 +119,44 @@ public class OneFragment extends Fragment {
             }
 
         });
+
+        mBtnShowMessenger.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent MessengerIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
+                if (MessengerIntent == null) {
+                    Toast.makeText(getContext(),"Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+                } else {
+                    try {
+                        startActivity(MessengerIntent);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+
+        mBtnShowGallery.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent GalleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                try {
+                    startActivity(GalleryIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "Please Install Dialer", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        mDateTimeWidget.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent ClockIntent = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
+                ClockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(ClockIntent);
+            }
+        });
+
+
 
         // Inflate the layout for this fragment
         return view;

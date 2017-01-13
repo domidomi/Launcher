@@ -3,4 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_drawer_width">260dp</dimen>
+
+    <dimen name="icon_size_dp">38dp</dimen>
+    <dimen name="menu_icon_size_dp">58dp</dimen>
+    <dimen name="icon_text_size">7sp</dimen>
 </resources>
