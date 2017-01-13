@@ -1,5 +1,20 @@
 <resources>
 
+    <style name="ShadowText" parent="@android:style/Theme.Material">
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:shadowColor">@color/textShadowColor</item>
+    </style>
+
+    <style name="IconMargin" parent="@android:style/Theme.Material">
+        <item name="android:layout_marginTop">5sp</item>
+        <item name="android:layout_marginBottom">5sp</item>
+        <item name="android:layout_marginRight">5sp</item>
+        <item name="android:layout_marginLeft">5sp</item>
+    </style>
+
+
     <!-- Base application theme. -->
     <style name="LauncherTheme" parent="LauncherTheme.Base">
         <item name="android:windowContentTransitions">true</item>
@@ -26,5 +41,6 @@
 
 
     </style>
+
 
 </resources>
