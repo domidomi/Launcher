@@ -5,4 +5,20 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="colorAccent">#FF80AB</color>
+
+    <color name="textShadowColor">#b5000000</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="darkBackground">#96000000</color>
+
+    <color name="iconColor">#eeffffff</color>
+    <color name="messengerIconBackground">#0084ff</color>
+    <color name="dialerIconBackground">#FFC300</color>
+    <color name="galleryIconBackground">#a3dfe2</color>
+    <color name="settingsIconBackground">#688491</color>
+
+    <color name="gamesFolderBackground">#19FFFC</color>
+    <color name="hobbyFolderBackground">#FFD500</color>
+    <color name="multimediaFolderBackground">#CC009A</color>
+    <color name="socialFolderBackground">#B2639F</color>
+    <color name="utilityFolderBackground">#B29E35</color>
 </resources>
