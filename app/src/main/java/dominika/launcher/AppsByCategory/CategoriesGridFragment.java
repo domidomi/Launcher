@@ -27,7 +27,6 @@ import dominika.launcher.TwoFragment;
 public class CategoriesGridFragment extends GridFragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<ArrayList<AppModel>> {
 
     AppListAdapter mAppListAdapter;
-    String code = "categories";
     int category;
 
     @Override
@@ -59,19 +58,12 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
     public Loader<ArrayList<AppModel>> onCreateLoader(int id, Bundle bundle) {
         Log.d("Wchodzę do: ", " onCreateLoader");
 
-
         // Load all installed apps
-        return new CategoriesAppsLoader(getActivity(), code);
-        /*for (int i=0; i < appsList.size(); i++) {
-            Log.d("Apki","i kategorie");
-            Log.d(appsList.get(i).getLabel(), appsList.get(i).getmCategory());
-        }*/
+        return new CategoriesAppsLoader(getActivity());
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<AppModel>> loader, ArrayList<AppModel> apps) {
-
-
 
         mAppListAdapter.setData(apps);
 
