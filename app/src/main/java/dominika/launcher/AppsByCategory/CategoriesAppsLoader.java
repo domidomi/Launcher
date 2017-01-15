@@ -13,12 +13,14 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import dominika.launcher.AllAppsGrid.AppModel;
 import dominika.launcher.AppsByCategory.AsyncResponse;
 import dominika.launcher.AppsByCategory.CategoryAppsModel;
 import dominika.launcher.AppsByCategory.CategoryHttpHelper;
+import dominika.launcher.MainActivity;
 import dominika.launcher.TwoFragment;
 
 /**
@@ -39,6 +41,7 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
 
     ArrayList<AppModel> appsList;
     ArrayList<AppModel> appsFromCategory;
+    ArrayList<AppModel> appsToCheckCategory;
 
     public CategoriesAppsLoader(Context context) {
         super(context);
@@ -71,6 +74,7 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
                 // Copy app data to new app object
                 AppModel app = new AppModel(mContext, allApps.get(i));
                 app.loadLabel(mContext);
+                app.setmCategory("null"); // Every app will have category named "other" in case
                 appsList.add(app);
             }
 
@@ -78,7 +82,54 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
 
         Collections.sort(appsList, ALPHA_COMPARATOR);
 
-        Log.d("Ile apek? : ", Integer.toString(appsList.size()));
+
+        Log.d("Ile ogólnie? : ", Integer.toString(appsList.size()));
+
+        appsToCheckCategory = new ArrayList<AppModel>();
+
+        // Check if known apps list is not empty - if is empty then we know that any of app has known category
+        // It will be important at the first run of the launcher
+        if (!MainActivity.mAppsList.isEmpty()) {
+            Log.d("Już znam jakieś apki: ", Integer.toString(MainActivity.mAppsList.size()));
+
+            // Check if recognized app wasn't deleted from device
+            ArrayList<String> labelsApps = new ArrayList<String>();
+            for (int i = 0; i < appsList.size(); i++) {
+                labelsApps.add(appsList.get(i).getLabel());
+            }
+
+            ArrayList<AppModel> appsStillOnDevice = new ArrayList<AppModel>();
+
+            for (int j = 0; j < MainActivity.mAppsList.size(); j++) {
+                if (labelsApps.contains(MainActivity.mAppsList.get(j).getLabel())) {
+                    appsStillOnDevice.add(MainActivity.mAppsList.get(j));
+                } else {
+                    continue;
+                }
+            }
+            MainActivity.setmAppsList(appsStillOnDevice);
+
+            Log.d("Tyle bez usunietych: ", Integer.toString(MainActivity.getmAppsList().size()));
+
+            // Check if app is already known
+            ArrayList<String> labels = new ArrayList<String>();
+            for (int i = 0; i < MainActivity.mAppsList.size(); i++) {
+                labels.add(MainActivity.mAppsList.get(i).getLabel());
+            }
+
+            // Check if app is already in known apps list
+            for (int j = 0; j < appsList.size(); j++) {
+                if (labels.contains(appsList.get(j).getLabel())) {
+                        continue;
+                    } else {
+                        appsToCheckCategory.add(appsList.get(j));
+                    }
+            }
+            appsList = appsToCheckCategory;
+        }
+
+
+        Log.d("Ile do sprawdzenia? : ", Integer.toString(appsList.size()));
 
         // List all apps (just for information)
         for (int i=0; i < appsList.size(); i++) {
@@ -122,9 +173,21 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
         //Here you will receive the result fired from async class
         //of onPostExecute(result) method.
 
+        // If the known list is empty add all apps - it will run the first time when launcher is running
+        if (MainActivity.mAppsList.isEmpty()) {
+            MainActivity.setmAppsList(appsList);
+        } else {
+            // Add every filtered app to the final list
+            for (int i=0; i<appsList.size(); i++) {
+                MainActivity.mAppsList.add(appsList.get(i));
+                Collections.sort(MainActivity.mAppsList, ALPHA_COMPARATOR);
+            }
+        }
         Log.d("Loading of categories: ", "DONE");
+
+        // Now get only apps from that folder
         Log.d("Filtering of apps: ", "STARTED");
-        filterApps(appsList);
+        filterApps(MainActivity.getmAppsList());
 
         // If loader was stopped (interrupted) - don't deliver anything
         if (isReset()) {
@@ -135,6 +198,9 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
 
         ArrayList<AppModel> allApps = appsFromCategory;
         mAppsToDeliver = appsFromCategory;
+
+        // Passing the list of categories to main activity list
+        MainActivity.setCategoryApps(appsFromCategory);
 
         if (isStarted()) {
             // If result is already avaiable deliver it.
@@ -196,13 +262,10 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
         this.appsFromCategory = appsFromCategory;
     }
 
-
-
     public void deliverResult(ArrayList<AppModel> appsList) {
         Log.d("Loading of categories: ", "STARTED");
         searchForAllCategories();
     }
-
 
     @Override
     protected void onStartLoading() {
