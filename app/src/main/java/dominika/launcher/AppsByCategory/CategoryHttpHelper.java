@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import dominika.launcher.AllAppsGrid.AppModel;
 import dominika.launcher.AppsByCategory.CategoriesAppsLoader;
 import dominika.launcher.AllAppsGrid.InstalledAppsLoader;
+import dominika.launcher.MainActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -53,7 +54,7 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
         appsList = loader.getAppsList();
         // For each app - get the category and store it in variable
         for (int i=0; i < appsList.size(); i++) {
-            String category = null;
+            String category = "Other";
 
             try {
                 URL url = new URL("https://play.google.com/store/apps/details?id=" + appsList.get(i).getAppInfo().packageName + "&hl=en");
