@@ -27,15 +27,7 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
     private CustomViewPager viewPager;
     private Context context;
 
-    public static ArrayList<AppModel> mGamesAppsList;
-    public static ArrayList<AppModel> mHobbyAppsList;
-    public static ArrayList<AppModel> mMultimediaAppsList;
-    public static ArrayList<AppModel> mSocialAppsList;
-    public static ArrayList<AppModel> mUtilityAppsList;
-    public static ArrayList<AppModel> mOtherAppsList;
-
     public static ArrayList<AppModel> mAppsList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +53,7 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
         CategoryAppsModel mCategoryAppsModel = new CategoryAppsModel();
         mCategoryAppsModel.showListOfCategories();
 
-        /*mGamesAppsList = new ArrayList<AppModel>();
-        mHobbyAppsList = new ArrayList<AppModel>();
-        mMultimediaAppsList = new ArrayList<AppModel>();
-        mSocialAppsList = new ArrayList<AppModel>();
-        mUtilityAppsList = new ArrayList<AppModel>();
-        mOtherAppsList = new ArrayList<AppModel>();*/
-
         mAppsList = new ArrayList<AppModel>();
-
-
     }
 
     /*
@@ -142,28 +125,5 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
     public static void setmAppsList(ArrayList<AppModel> mAppsList) {
         MainActivity.mAppsList = mAppsList;
     }
-
-    public static void setCategoryApps(ArrayList<AppModel> appsList) {
-        switch (TwoFragment.clickedFolder) {
-            case "games":
-                mGamesAppsList = appsList;
-                break;
-            case "hobby":
-                mHobbyAppsList = appsList;
-                break;
-            case "multimedia":
-                mMultimediaAppsList = appsList;
-                break;
-            case "social":
-                mSocialAppsList = appsList;
-                break;
-            case "utility":
-                mUtilityAppsList = appsList;
-                break;
-            default:
-                mOtherAppsList = appsList;
-        }
-    }
-
 
 }

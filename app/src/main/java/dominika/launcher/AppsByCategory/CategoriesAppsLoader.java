@@ -1,11 +1,15 @@
 package dominika.launcher.AppsByCategory;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+
+import org.json.JSONException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,6 +25,8 @@ import dominika.launcher.AppsByCategory.AsyncResponse;
 import dominika.launcher.AppsByCategory.CategoryAppsModel;
 import dominika.launcher.AppsByCategory.CategoryHttpHelper;
 import dominika.launcher.MainActivity;
+import dominika.launcher.SharedPreferencesHelper.SharedPreferencesAppModel;
+import dominika.launcher.SharedPreferencesHelper.SharedPreferencesHelper;
 import dominika.launcher.TwoFragment;
 
 /**
@@ -42,6 +48,7 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
     ArrayList<AppModel> appsList;
     ArrayList<AppModel> appsFromCategory;
     ArrayList<AppModel> appsToCheckCategory;
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     public CategoriesAppsLoader(Context context) {
         super(context);
@@ -51,6 +58,10 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
 
     @Override
     public ArrayList<AppModel> loadInBackground() {
+
+        /*SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sharedPrefs.edit().remove("applist").apply();*/
+
 
         // Get list of installed apps
         List<ApplicationInfo> allApps = mPackageManager.getInstalledApplications(0);
@@ -75,6 +86,7 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
                 AppModel app = new AppModel(mContext, allApps.get(i));
                 app.loadLabel(mContext);
                 app.setmCategory("null"); // Every app will have category named "other" in case
+                Log.d("Package: ", app.getApplicationPackageName());
                 appsList.add(app);
             }
 
@@ -83,9 +95,37 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
         Collections.sort(appsList, ALPHA_COMPARATOR);
 
 
-        Log.d("Ile ogólnie? : ", Integer.toString(appsList.size()));
+        Log.d("Ile apek ogólnie? : ", Integer.toString(appsList.size()));
 
         appsToCheckCategory = new ArrayList<AppModel>();
+        sharedPreferencesHelper = new SharedPreferencesHelper(mContext);
+
+        if (MainActivity.mAppsList.isEmpty()) {
+
+            ArrayList<SharedPreferencesAppModel> list = sharedPreferencesHelper.getList();
+
+            if(list != null) {
+                for (int i = 0; i < appsList.size(); i++) {
+                    for (int j = 0; j < list.size(); j++ ) {
+                        if (appsList.get(i).getLabel().equals(list.get(j).getmAppLabel())) {
+                            appsList.get(i).setmCategory(list.get(j).getmCategory());
+                        }
+                    }
+                }
+
+                ArrayList<AppModel> knownApps = new ArrayList<AppModel>();
+                for (int i = 0; i < appsList.size(); i++) {
+                    if (appsList.get(i).getmCategory() != null) {
+                        knownApps.add(appsList.get(i));
+                        Log.d("Znam apkę: ", knownApps.get(knownApps.size()-1).getLabel());
+                    }
+                }
+
+                MainActivity.setmAppsList(knownApps);
+            } else {
+                Log.d("PUSTE ", "SHARED PREFERENCES");
+            }
+        }
 
         // Check if known apps list is not empty - if is empty then we know that any of app has known category
         // It will be important at the first run of the launcher
@@ -128,7 +168,6 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
             appsList = appsToCheckCategory;
         }
 
-
         Log.d("Ile do sprawdzenia? : ", Integer.toString(appsList.size()));
 
         // List all apps (just for information)
@@ -139,11 +178,6 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
             Log.d("Label: ", appsList.get(i).getLabel());
         }
 
-        /*// If we want to retrieve app by category (not all apps) do:
-        if (code.equals("categories")) {
-            Log.d("Loading of categories: ", "STARTED");
-            searchForAllCategories(appsList);
-        }*/
         return appsList;
     }
 
@@ -183,6 +217,19 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
                 Collections.sort(MainActivity.mAppsList, ALPHA_COMPARATOR);
             }
         }
+
+
+        Log.d("Wpisuje do shared ", "preferences");
+        for (int i=0; i<MainActivity.getmAppsList().size(); i++) {
+            Log.d("Apka: ", MainActivity.getmAppsList().get(i).getmCategory());
+        }
+
+        try {
+            sharedPreferencesHelper.saveList(MainActivity.getmAppsList());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         Log.d("Loading of categories: ", "DONE");
 
         // Now get only apps from that folder
@@ -200,7 +247,7 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
         mAppsToDeliver = appsFromCategory;
 
         // Passing the list of categories to main activity list
-        MainActivity.setCategoryApps(appsFromCategory);
+        /*MainActivity.setCategoryApps(appsFromCategory);*/
 
         if (isStarted()) {
             // If result is already avaiable deliver it.

@@ -117,6 +117,14 @@ public class TwoFragment extends Fragment {
 
         });
 
+        LinearLayout mBtnOther = (LinearLayout) view.findViewById(R.id.btnCategoryOther);
+        mBtnOther.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFolder("other");
+            }
+
+        });
+
         return view;
     }
 
