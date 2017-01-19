@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.File;
 
 import dominika.launcher.R;
@@ -18,7 +20,7 @@ import static android.content.ContentValues.TAG;
  * Model of an application object which stores all needed information about an app retrieved from system.
  */
 
-public class AppModel {
+public class AppModel extends Object {
     private final Context mContext;
     private final ApplicationInfo mAppInfo;
 
@@ -36,6 +38,16 @@ public class AppModel {
 
         //Directory of an app
         mApkFile = new File(info.sourceDir);
+    }
+
+    public JSONObject toJSON(){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            jsonObject.accumulate("package", mAppLabel);
+            jsonObject.accumulate("category", mCategory);
+        }catch (Exception ignored){
+        }
+        return jsonObject;
     }
 
     // Get info about app
