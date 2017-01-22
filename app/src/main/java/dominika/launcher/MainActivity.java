@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -77,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
 
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(MainActivity.this,
-                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(MainActivity.this,
+                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();*/
             }
 
             @Override
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
             }
         });
     }
-
 
     //Communicating between fragments
     public void onFragmentInteraction(Uri uri){

@@ -1,19 +1,29 @@
 package dominika.launcher;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import dominika.launcher.AppsByCategory.CategoriesGridFragment;
+import dominika.launcher.AppsByCategory.GridElementAdapter;
 
 
 /**
@@ -36,7 +46,11 @@ public class TwoFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    View view;
+
     private OnFragmentInteractionListener mListener;
+
+    private GridView horizontalGridView;
 
     public TwoFragment() {
         // Required empty public constructor
@@ -74,7 +88,7 @@ public class TwoFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_two, container, false);
+        view = inflater.inflate(R.layout.fragment_two, container, false);
 
         // Listen to button which calls category
         LinearLayout mBtnGames = (LinearLayout) view.findViewById(R.id.btnCategoryGames);
@@ -125,14 +139,53 @@ public class TwoFragment extends Fragment {
 
         });
 
+   /*     view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                        view.findViewById(R.id.title_horizontalScrollView).setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(),
+                                "NIby widoczne", Toast.LENGTH_SHORT).show();
+                        return true;
+
+
+                }
+
+                return false;
+            }
+        });
+*/
         return view;
     }
 
     private void loadFolder(String category) {
+       /* byte[] byteArray = getBitmapForBackground();
+
+        // Save bitmap to bundle
+        Bundle bundle = new Bundle();
+        bundle.putByteArray("screenShot",byteArray);*/
+
         clickedFolder = category;
         Fragment fragment = new CategoriesGridFragment();
+        //fragment.setArguments(bundle);
         replaceFragment(fragment);
     }
+
+    /*public byte[] getBitmapForBackground() {
+
+
+        // Get our bitmap and cut it
+        FragmentsBackgroundEffects fragmentsBackgroundEffects = new FragmentsBackgroundEffects();
+        Bitmap screenShot = fragmentsBackgroundEffects.getScreenShot(, marginTop, marginBottom);
+
+        // Write bitmap to byte stream
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        screenShot.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        return byteArray;
+    }*/
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();

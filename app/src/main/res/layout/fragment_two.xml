@@ -5,188 +5,189 @@
     android:id="@+id/two_fragment"
     tools:context="dominika.launcher.TwoFragment">
 
-    <GridLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layoutForScreenshot"
+        />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_alignParentBottom="true"
-
-        android:layout_gravity="center"
         android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:padding="1dp"
+        android:orientation="vertical">
 
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginTop="20sp"
-        android:layout_marginBottom="20sp"
-
-        android:rowCount="2"
-        android:columnCount="4"
-        >
-
-
-        <LinearLayout
-            android:layout_row="0"
-            android:layout_column="0"
-
-            android:layout_width="wrap_content"
+        <HorizontalScrollView
+            style="@style/AppsPaneMargin"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnCategoryUtility"
-            android:textAlignment="center"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:background="@drawable/utility_apps_icon"
-                android:layout_width="@dimen/menu_icon_size_dp"
-                android:layout_height="@dimen/menu_icon_size_dp"
-                />
+            android:scrollbars="horizontal"
+            android:id="@+id/title_horizontalScrollView"
+            android:fillViewport="false">
 
-            <TextView
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Utility"
-                android:textColor="@color/iconColor"
+                >
 
-                style="@style/ShadowText"
-                />
-        </LinearLayout>
+                <LinearLayout
+                    style="@style/IconMargin"
 
-        <LinearLayout
-            android:layout_row="0"
-            android:layout_column="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnCategoryUtility"
+                    android:textAlignment="center"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:background="@drawable/utility_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnCategorySocial"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:background="@drawable/social_apps_icon"
-                android:layout_width="@dimen/menu_icon_size_dp"
-                android:layout_height="@dimen/menu_icon_size_dp"
-                />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Utility"
+                        android:textColor="@color/iconColor"
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Social"
-                android:textColor="@color/iconColor"
+                        style="@style/ShadowText"
+                        />
+                </LinearLayout>
 
-                style="@style/ShadowText"
-                />
-        </LinearLayout>
+                <LinearLayout
+                    style="@style/IconMargin"
 
-        <LinearLayout
-            android:layout_row="0"
-            android:layout_column="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnCategorySocial"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:background="@drawable/social_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Social"
+                        android:textColor="@color/iconColor"
 
-            android:id="@+id/btnCategoryMultimedia"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:background="@drawable/multimedia_apps_icon"
-                android:layout_width="@dimen/menu_icon_size_dp"
-                android:layout_height="@dimen/menu_icon_size_dp"
-                />
+                        style="@style/ShadowText"
+                        />
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Multimedia"
-                android:textColor="@color/iconColor"
+                <LinearLayout
+                    style="@style/IconMargin"
 
-                style="@style/ShadowText"
-                />
-        </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
+                    android:id="@+id/btnCategoryMultimedia"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:background="@drawable/multimedia_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        />
 
-        <LinearLayout
-            android:layout_row="0"
-            android:layout_column="3"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Multimedia"
+                        android:textColor="@color/iconColor"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnCategoryGames"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:background="@drawable/games_apps_icon"
-                android:layout_width="@dimen/menu_icon_size_dp"
-                android:layout_height="@dimen/menu_icon_size_dp"
-                />
+                        style="@style/ShadowText"
+                        />
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Games"
-                android:textColor="@color/iconColor"
+                <LinearLayout
+                    style="@style/IconMargin"
 
-                style="@style/ShadowText"
-                />
-        </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnCategoryGames"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:background="@drawable/games_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        />
 
-        <LinearLayout
-            android:layout_row="1"
-            android:layout_column="0"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Games"
+                        android:textColor="@color/iconColor"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnCategoryHobby"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:background="@drawable/hobby_apps_icon"
-                android:layout_width="@dimen/menu_icon_size_dp"
-                android:layout_height="@dimen/menu_icon_size_dp"
-                />
+                        style="@style/ShadowText"
+                        />
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Hobby"
-                android:textColor="@color/iconColor"
+                <LinearLayout
+                    style="@style/IconMargin"
 
-                style="@style/ShadowText"
-                />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnCategoryHobby"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:background="@drawable/hobby_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        />
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Hobby"
+                        android:textColor="@color/iconColor"
 
-        <LinearLayout
-            android:layout_row="1"
-            android:layout_column="1"
+                        style="@style/ShadowText"
+                        />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnCategoryOther"
-            android:textAlignment="center"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:background="@drawable/utility_apps_icon"
-                android:layout_width="@dimen/menu_icon_size_dp"
-                android:layout_height="@dimen/menu_icon_size_dp"
-                />
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Other"
-                android:textColor="@color/iconColor"
+                <LinearLayout
+                    style="@style/IconMargin"
 
-                style="@style/ShadowText"
-                />
-        </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnCategoryOther"
+                    android:textAlignment="center"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:background="@drawable/utility_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        />
 
-    </GridLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Other"
+                        android:textColor="@color/iconColor"
 
+                        style="@style/ShadowText"
+                        />
+                </LinearLayout>
 
-
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
 </RelativeLayout>
