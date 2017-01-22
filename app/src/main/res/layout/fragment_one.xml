@@ -23,72 +23,117 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        <ScrollView
+            android:id="@+id/scrollView1"
 
-        android:layout_alignParentBottom="true"
+            style="@style/AppsPaneMargin"
 
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:scrollbars="vertical"
+            android:layout_height="78dp"
+            android:layout_weight = "1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginTop="20sp"
-        android:layout_marginBottom="20sp"
+                <LinearLayout
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
 
+                    <ImageButton
+                        style="@style/IconMargin"
 
+                        android:background="@drawable/settings_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowSettings"/>
 
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
+                    <ImageButton
+                        style="@style/IconMargin"
 
-        <ImageButton
-            style="@style/IconMargin"
+                        android:background="@drawable/dialer_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowDialer" />
 
-            android:background="@drawable/settings_icon"
+                    <ImageButton
+                        style="@style/IconMargin"
 
+                        android:background="@drawable/all_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnAllApps"
+                        android:onClick="showAllApps" />
 
-            android:layout_width="@dimen/menu_icon_size_dp"
-            android:layout_height="@dimen/menu_icon_size_dp"
-            android:id="@+id/btnShowSettings">
+                    <ImageButton
+                        style="@style/IconMargin"
 
-        </ImageButton>
+                        android:background="@drawable/messenger_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowMessenger"/>
 
-        <ImageButton
-            style="@style/IconMargin"
+                    <ImageButton
+                        style="@style/IconMargin"
 
-            android:background="@drawable/dialer_icon"
-            android:layout_width="@dimen/menu_icon_size_dp"
-            android:layout_height="@dimen/menu_icon_size_dp"
-            android:id="@+id/btnShowDialer" />
+                        android:background="@drawable/gallery_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowGallery"/>
 
-        <ImageButton
-            style="@style/IconMargin"
+                </LinearLayout>
+                <LinearLayout
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
 
-            android:background="@drawable/all_apps_icon"
-            android:layout_width="@dimen/menu_icon_size_dp"
-            android:layout_height="@dimen/menu_icon_size_dp"
-            android:id="@+id/btnAllApps"
-            android:onClick="showAllApps" />
+                    <ImageButton
+                        style="@style/IconMargin"
 
-        <ImageButton
-            style="@style/IconMargin"
+                        android:background="@drawable/settings_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"/>
 
-            android:background="@drawable/messenger_icon"
-            android:layout_width="@dimen/menu_icon_size_dp"
-            android:layout_height="@dimen/menu_icon_size_dp"
-            android:id="@+id/btnShowMessenger"/>
+                    <ImageButton
+                        style="@style/IconMargin"
 
-        <ImageButton
-            style="@style/IconMargin"
+                        android:background="@drawable/dialer_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"/>
 
-            android:background="@drawable/gallery_icon"
-            android:layout_width="@dimen/menu_icon_size_dp"
-            android:layout_height="@dimen/menu_icon_size_dp"
-            android:id="@+id/btnShowGallery"/>
+                    <ImageButton
+                        style="@style/IconMargin"
 
+                        android:background="@drawable/all_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"/>
 
+                    <ImageButton
+                        style="@style/IconMargin"
 
-    </LinearLayout>
+                        android:background="@drawable/messenger_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"/>
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
+                        android:background="@drawable/gallery_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
 
 
 

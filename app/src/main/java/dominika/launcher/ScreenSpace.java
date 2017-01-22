@@ -100,6 +100,19 @@ public class ScreenSpace {
         pager.setLayoutParams(lp);
     }
 
+    public int getTopMargin() {
+        return topMargin;
+    }
 
+    public void setTopMargin(int topMargin) {
+        this.topMargin = topMargin;
+    }
 
+    public int getBottomMargin() {
+        return bottomMargin;
+    }
+
+    public void setBottomMargin(int bottomMargin) {
+        this.bottomMargin = bottomMargin;
+    }
 }

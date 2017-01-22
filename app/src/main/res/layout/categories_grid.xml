@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_row="0"
+        android:layout_column="0"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryUtility"
+        android:textAlignment="center"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:background="@drawable/utility_apps_icon"
+            android:layout_width="@dimen/menu_icon_size_dp"
+            android:layout_height="@dimen/menu_icon_size_dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Utility"
+            android:textColor="@color/iconColor"
+
+            style="@style/ShadowText"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_row="0"
+        android:layout_column="1"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategorySocial"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:background="@drawable/social_apps_icon"
+            android:layout_width="@dimen/menu_icon_size_dp"
+            android:layout_height="@dimen/menu_icon_size_dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Social"
+            android:textColor="@color/iconColor"
+
+            style="@style/ShadowText"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_row="0"
+        android:layout_column="2"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/btnCategoryMultimedia"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:background="@drawable/multimedia_apps_icon"
+            android:layout_width="@dimen/menu_icon_size_dp"
+            android:layout_height="@dimen/menu_icon_size_dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Multimedia"
+            android:textColor="@color/iconColor"
+
+            style="@style/ShadowText"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_row="0"
+        android:layout_column="3"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryGames"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:background="@drawable/games_apps_icon"
+            android:layout_width="@dimen/menu_icon_size_dp"
+            android:layout_height="@dimen/menu_icon_size_dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Games"
+            android:textColor="@color/iconColor"
+
+            style="@style/ShadowText"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_row="1"
+        android:layout_column="0"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryHobby"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:background="@drawable/hobby_apps_icon"
+            android:layout_width="@dimen/menu_icon_size_dp"
+            android:layout_height="@dimen/menu_icon_size_dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Hobby"
+            android:textColor="@color/iconColor"
+
+            style="@style/ShadowText"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_row="1"
+        android:layout_column="1"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCategoryOther"
+        android:textAlignment="center"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:background="@drawable/utility_apps_icon"
+            android:layout_width="@dimen/menu_icon_size_dp"
+            android:layout_height="@dimen/menu_icon_size_dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Other"
+            android:textColor="@color/iconColor"
+
+            style="@style/ShadowText"
+            />
+    </LinearLayout>
+
+</LinearLayout>
