@@ -27,6 +27,7 @@ import dominika.launcher.AllAppsGrid.AppModel;
 import dominika.launcher.AppsByCategory.CategoriesAppsLoader;
 import dominika.launcher.AllAppsGrid.GridFragment;
 import dominika.launcher.AllAppsGrid.InstalledAppsLoader;
+import dominika.launcher.CustomViewPager;
 import dominika.launcher.FragmentsBackgroundEffects;
 import dominika.launcher.MainActivity;
 import dominika.launcher.R;
@@ -49,8 +50,15 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
 
         setEmptyText("Brak aplikacji");
 
-        fragmentsBackgroundEffects = new FragmentsBackgroundEffects();
-        Bitmap screenBitmap = fragmentsBackgroundEffects.getScreenShot(getActivity().findViewById(R.id.layoutForScreenshot));
+        // Block moving to left-right on categories
+        if(CategoriesGridFragment.this.getView().getVisibility() == View.VISIBLE) {
+            MainActivity activity = (MainActivity) getActivity();
+            CustomViewPager vp = (CustomViewPager) activity.getViewPager();
+            vp.setPagingEnabled(false);
+        }
+
+        fragmentsBackgroundEffects = new FragmentsBackgroundEffects(getContext());
+        Bitmap screenBitmap = fragmentsBackgroundEffects.getScreenShot(getActivity().findViewById(R.id.activity_main));
 
         loadBackground loader = new loadBackground(new taskComplete() {
             @Override
@@ -80,6 +88,14 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
 
 
         startLoading();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity activity = (MainActivity) getActivity();
+        CustomViewPager vp = (CustomViewPager) activity.getViewPager();
+        vp.setPagingEnabled(true);
     }
 
     public void startLoading() {
@@ -123,6 +139,7 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
         }
     }
 
+
     public int getCategory() {
         return category;
     }
@@ -161,7 +178,4 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
     interface taskComplete{
         void complete (Bitmap resultBitmap);
     }
-
-
-
 }
