@@ -7,11 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -27,9 +29,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import dominika.launcher.Constants;
 import dominika.launcher.CustomViewPager;
 import dominika.launcher.MainActivity;
 import dominika.launcher.R;
+import dominika.launcher.ScreenSpace;
 
 import static android.R.attr.width;
 import static dominika.launcher.R.attr.height;
@@ -140,7 +144,6 @@ public class PaintNoteFragment extends Fragment {
         // Set buttons and listeners
         setButtons(view);
 
-
         // Inflate the layout for this fragment
 
         return view;
@@ -163,9 +166,6 @@ public class PaintNoteFragment extends Fragment {
         });
     }
 
-
-
-
     public void exitDrawing() {
         MainActivity activity = (MainActivity) getActivity();
         CustomViewPager vp = (CustomViewPager) activity.getViewPager();
@@ -177,7 +177,6 @@ public class PaintNoteFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            Log.d("ll", "this fragment is now visible");
             MainActivity activity = (MainActivity) getActivity();
             CustomViewPager vp = (CustomViewPager) activity.getViewPager();
             vp.setPagingEnabled(false);
@@ -224,10 +223,6 @@ public class PaintNoteFragment extends Fragment {
 
         // remove view
         layout.removeView(drawView);
-
-
-        Log.d("Niszczę widok", ".");
-
     }
 
     /**
@@ -289,11 +284,19 @@ public class PaintNoteFragment extends Fragment {
             mPaint = new Paint();
             mPaint.setAntiAlias(true);
             mPaint.setDither(true);
-            mPaint.setColor(Color.CYAN);
+            mPaint.setColor(Color.parseColor(Constants.COLOR_ACCENT_LIGHT_VIOLET));
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setStrokeJoin(Paint.Join.ROUND);
             mPaint.setStrokeCap(Paint.Cap.ROUND);
-            mPaint.setStrokeWidth(16);
+
+            Point p = ScreenSpace.availableSpace;
+
+            if (p.x <= 720) {
+                mPaint.setStrokeWidth(10);
+            } else {
+                mPaint.setStrokeWidth(18);
+            }
+
         }
 
         /*@Override

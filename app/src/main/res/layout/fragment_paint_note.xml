@@ -28,24 +28,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/drawing_layout"
-        android:background="#AA000000" >
+        android:background="@color/transparentDarkColor" >
     </RelativeLayout>
 
     <ImageButton
         android:background="@drawable/trash_icon"
-        android:layout_width="@dimen/icon_size_dp"
-        android:layout_height="@dimen/icon_size_dp"
+        android:layout_width="@dimen/menu_icon_size_dp"
+        android:layout_height="@dimen/menu_icon_size_dp"
         android:id="@+id/btnClearDrawing"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp" />
+        style="@style/PaintNoteIconsMargin"/>
 
     <ImageButton
         android:background="@drawable/arrow_right_icon"
-        android:layout_width="@dimen/icon_size_dp"
-        android:layout_height="@dimen/icon_size_dp"
+        android:layout_width="@dimen/menu_icon_size_dp"
+        android:layout_height="@dimen/menu_icon_size_dp"
         android:id="@+id/btnExitDrawing"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="15dp" />
+        style="@style/PaintNoteIconsMargin" />
 
 </RelativeLayout>

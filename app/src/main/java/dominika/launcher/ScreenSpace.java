@@ -21,6 +21,7 @@ public class ScreenSpace {
     public Activity activity;
     int topMargin;
     int bottomMargin;
+    public static Point availableSpace;
 
     public ScreenSpace(Activity _activity){
         this.activity = _activity;
@@ -64,7 +65,7 @@ public class ScreenSpace {
         return id > 0 && contextWrapper.getResources().getBoolean(id);*/
 
         Point realSize = new Point();
-        Point availableSpace = new Point();
+        availableSpace = new Point();
         boolean hasNavBar = false;
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);

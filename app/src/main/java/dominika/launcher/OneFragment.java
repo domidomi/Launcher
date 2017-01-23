@@ -1,11 +1,13 @@
 package dominika.launcher;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.AlarmClock;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -20,6 +22,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
 import android.widget.Toast;
+
+import java.net.URI;
 
 import dominika.launcher.AllAppsGrid.AppsGridFragment;
 
@@ -78,7 +82,7 @@ public class OneFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_one, container, false);
@@ -89,6 +93,13 @@ public class OneFragment extends Fragment {
         ImageButton mBtnAllApps = (ImageButton) view.findViewById(R.id.btnAllApps);
         ImageButton mBtnShowMessenger = (ImageButton) view.findViewById(R.id.btnShowMessenger);
         ImageButton mBtnShowGallery = (ImageButton) view.findViewById(R.id.btnShowGallery);
+
+
+        ImageButton mBtnShowMessageApp = (ImageButton) view.findViewById(R.id.btnShowMessageApp);
+        ImageButton mBtnShowBrowser = (ImageButton) view.findViewById(R.id.btnShowBrowser);
+        ImageButton mBtnShowCamera = (ImageButton) view.findViewById(R.id.btnShowCamera);
+        ImageButton mBtnShowGmail = (ImageButton) view.findViewById(R.id.btnShowGmail);
+        ImageButton mBtnShowCalendar = (ImageButton) view.findViewById(R.id.btnShowCalc);
 
         LinearLayout mDateTimeWidget = (LinearLayout) view.findViewById(R.id.dateTimeWidget);
 
@@ -137,7 +148,7 @@ public class OneFragment extends Fragment {
 
         mBtnShowGallery.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent GalleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent GalleryIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("content://media/internal/images/media"));
 
                 try {
                     startActivity(GalleryIntent);
@@ -147,6 +158,99 @@ public class OneFragment extends Fragment {
 
             }
         });
+
+        mBtnShowMessageApp.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent MesssageAppIntent = new Intent(Intent.ACTION_MAIN);
+                MesssageAppIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                MesssageAppIntent.setType("vnd.android-dir/mms-sms");
+
+                try {
+                    startActivity(MesssageAppIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "Please Install Messaging App", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        mBtnShowBrowser.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent BrowserIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.sec.android.app.sbrowser");
+                if (BrowserIntent == null) {
+                    BrowserIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.android.browser");
+                    try {
+                        startActivity(BrowserIntent);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getContext(), "Please Install Browser", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    try {
+                        startActivity(BrowserIntent);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getContext(), "Please Install Browser", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+
+        mBtnShowCamera.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent CameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+
+                try {
+                    startActivity(CameraIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "Please Install Camera App", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        mBtnShowGmail.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent mailIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.google.android.gm");
+                if (mailIntent != null) {
+                    try {
+                        startActivity(mailIntent);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getContext(), "You should install Gmail.", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    mailIntent = new Intent(Intent.ACTION_MAIN);
+                    mailIntent.addCategory(Intent.CATEGORY_APP_EMAIL);
+                    try {
+                        startActivity(mailIntent);
+                    } catch (android.content.ActivityNotFoundException exc) {
+                        Toast.makeText(getContext(), "You have to install mail app.", Toast.LENGTH_LONG).show();
+
+                    }
+                }
+            }
+        });
+
+        mBtnShowCalendar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                long startMillis = System.currentTimeMillis();
+                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+                builder.appendPath("time");
+                ContentUris.appendId(builder, startMillis);
+                Intent CalendarIntent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
+
+                //Intent CalendarIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                try {
+                    startActivity(CalendarIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "Please Install Calendar App", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+
+
 
         mDateTimeWidget.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

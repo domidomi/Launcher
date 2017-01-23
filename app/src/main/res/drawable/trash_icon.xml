@@ -1,7 +1,32 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
-    android:width="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path android:fillColor="@color/iconColor" android:pathData="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="0dp"
+        android:drawable="@android:drawable/dialog_holo_light_frame"
+
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp"/>
+    <item>
+        <!-- drawable/circle_card_icon.xml -->
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" >
+            <solid android:color="@color/trashIconBackground"/>
+            <stroke android:width="0dp"
+                android:color="@color/trashIconBackground"/>
+            <padding android:left="3dp"
+                android:top="3dp"
+                android:right="3dp"
+                android:bottom="3dp"/>
+            <corners android:radius="0dp"/>
+        </shape>
+    </item>
+    <item>
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:height="24dp"
+            android:width="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path android:fillColor="@color/iconColor" android:pathData="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+        </vector>
+    </item>
+</layer-list>
