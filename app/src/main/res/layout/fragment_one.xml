@@ -31,13 +31,64 @@
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
             android:scrollbars="vertical"
-            android:layout_height="78dp"
+            android:layout_height="88dp"
             android:layout_weight = "1">
             <LinearLayout
+                android:paddingTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
+                <LinearLayout
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
+                        android:background="@drawable/dialer_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowDialer" />
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
+                        android:background="@drawable/message_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowMessageApp"/>
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
+                        android:background="@drawable/all_apps_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnAllApps"
+                        android:onClick="showAllApps" />
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
+                        android:background="@drawable/browser_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowBrowser"/>
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
+                        android:background="@drawable/camera_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowCamera"/>
+
+                </LinearLayout>
                 <LinearLayout
                     android:paddingBottom="10dp"
                     android:orientation="horizontal"
@@ -57,23 +108,6 @@
                     <ImageButton
                         style="@style/IconMargin"
 
-                        android:background="@drawable/dialer_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowDialer" />
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/all_apps_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnAllApps"
-                        android:onClick="showAllApps" />
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
                         android:background="@drawable/messenger_icon"
                         android:layout_width="@dimen/menu_icon_size_dp"
                         android:layout_height="@dimen/menu_icon_size_dp"
@@ -82,54 +116,27 @@
                     <ImageButton
                         style="@style/IconMargin"
 
+                        android:background="@drawable/gmail_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowGmail"/>
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
+                        android:background="@drawable/calendar_icon"
+                        android:layout_width="@dimen/menu_icon_size_dp"
+                        android:layout_height="@dimen/menu_icon_size_dp"
+                        android:id="@+id/btnShowCalc"/>
+
+
+                    <ImageButton
+                        style="@style/IconMargin"
+
                         android:background="@drawable/gallery_icon"
                         android:layout_width="@dimen/menu_icon_size_dp"
                         android:layout_height="@dimen/menu_icon_size_dp"
                         android:id="@+id/btnShowGallery"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:paddingBottom="10dp"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/settings_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"/>
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/dialer_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"/>
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/all_apps_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"/>
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/messenger_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"/>
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/gallery_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"/>
 
                 </LinearLayout>
             </LinearLayout>

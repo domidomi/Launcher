@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface Constants {
 
+    String TRANSPARENT_DARK_COLOR = "#AA000000";
+    String COLOR_ACCENT_LIGHT_VIOLET = "#EACCF5";
 
 
 }
