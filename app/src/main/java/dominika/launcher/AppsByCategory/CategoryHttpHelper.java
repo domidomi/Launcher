@@ -109,6 +109,6 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
         Log.d("Skończył szukanie: ", "HTTP HELPER");
         loader.setAppsList(appModels);
 
-        delegate.processFinish("pupka");
+        delegate.processFinish("done");
     }
 }

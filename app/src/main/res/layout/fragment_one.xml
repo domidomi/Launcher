@@ -7,141 +7,227 @@
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/dateTimeWidget"
+        android:id="@+id/datetimeTemperatureLayout"
+
+        style="@style/AppsPaneMargin"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:gravity="center">
-
-        <TextClock
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:id="@+id/textClock" />
+            android:layout_weight="0.45"
+            >
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:id="@+id/datetime_layout"
+            android:orientation="vertical"
+            >
+
+                <TextClock
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/hour_text_size"
+                    android:textColor="@android:color/white"
+                    style="@style/ShadowText"
+                    android:fontFamily="sans-serif-thin"
+                    android:letterSpacing="0.1"
+                    android:id="@+id/textClock" />
+
+                <TextView
+                    android:layout_marginTop="-5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/date_text_size"
+                    android:textColor="@android:color/white"
+                    style="@style/ShadowText"
+                    android:textAllCaps="true"
+                    android:id="@+id/date_textView" />
+
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/temperature_layout"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/hour_text_size"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@android:color/white"
+                    style="@style/ShadowText"
+                    android:fontFamily="sans-serif-thin"
+                    android:letterSpacing="0.1"
+                    android:id="@+id/temperature_textView" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_marginTop="-5dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/date_text_size"
+                        android:textColor="@android:color/white"
+                        android:paddingEnd="5dp"
+                        style="@style/ShadowText"
+                        android:id="@+id/city_textView" />
+
+                    <ImageButton
+                        style="@style/IconMargin"
+                        android:background="@drawable/refresh_icon"
+                        android:layout_width="@dimen/refresh_icon_size_dp"
+                        android:layout_height="@dimen/refresh_icon_size_dp"
+                        android:id="@+id/btnRefreshTemperature" />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
-        <ScrollView
-            android:id="@+id/scrollView1"
+    <ScrollView
+        android:id="@+id/scrollView1"
 
-            style="@style/AppsPaneMargin"
+        style="@style/AppsPaneMargin"
 
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:scrollbars="vertical"
+        android:layout_height="88dp"
+        android:layout_weight = "1">
+        <LinearLayout
+            android:paddingTop="10dp"
             android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:scrollbars="vertical"
-            android:layout_height="88dp"
-            android:layout_weight = "1">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
             <LinearLayout
-                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                >
 
-                <LinearLayout
-                    android:paddingBottom="10dp"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                <ImageButton
+                    style="@style/IconMargin"
 
-                    <ImageButton
-                        style="@style/IconMargin"
+                    android:background="@drawable/dialer_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowDialer" />
 
-                        android:background="@drawable/dialer_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowDialer" />
+                <ImageButton
+                    style="@style/IconMargin"
 
-                    <ImageButton
-                        style="@style/IconMargin"
+                    android:background="@drawable/message_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowMessageApp"/>
 
-                        android:background="@drawable/message_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowMessageApp"/>
+                <ImageButton
+                    style="@style/IconMargin"
 
-                    <ImageButton
-                        style="@style/IconMargin"
+                    android:background="@drawable/all_apps_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnAllApps"
+                    android:onClick="showAllApps" />
 
-                        android:background="@drawable/all_apps_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnAllApps"
-                        android:onClick="showAllApps" />
+                <ImageButton
+                    style="@style/IconMargin"
 
-                    <ImageButton
-                        style="@style/IconMargin"
+                    android:background="@drawable/browser_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowBrowser"/>
 
-                        android:background="@drawable/browser_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowBrowser"/>
+                <ImageButton
+                    style="@style/IconMargin"
 
-                    <ImageButton
-                        style="@style/IconMargin"
+                    android:background="@drawable/camera_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowCamera"/>
 
-                        android:background="@drawable/camera_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowCamera"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:paddingBottom="10dp"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/settings_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowSettings"/>
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/messenger_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowMessenger"/>
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/gmail_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowGmail"/>
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/calendar_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowCalc"/>
-
-
-                    <ImageButton
-                        style="@style/IconMargin"
-
-                        android:background="@drawable/gallery_icon"
-                        android:layout_width="@dimen/menu_icon_size_dp"
-                        android:layout_height="@dimen/menu_icon_size_dp"
-                        android:id="@+id/btnShowGallery"/>
-
-                </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+            <LinearLayout
+                android:paddingBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageButton
+                    style="@style/IconMargin"
+
+                    android:background="@drawable/settings_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowSettings"/>
+
+                <ImageButton
+                    style="@style/IconMargin"
+
+                    android:background="@drawable/messenger_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowMessenger"/>
+
+                <ImageButton
+                    style="@style/IconMargin"
+
+                    android:background="@drawable/gmail_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowGmail"/>
+
+                <ImageButton
+                    style="@style/IconMargin"
+
+                    android:background="@drawable/calendar_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowCalc"/>
 
 
+                <ImageButton
+                    style="@style/IconMargin"
+
+                    android:background="@drawable/gallery_icon"
+                    android:layout_width="@dimen/menu_icon_size_dp"
+                    android:layout_height="@dimen/menu_icon_size_dp"
+                    android:id="@+id/btnShowGallery"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
