@@ -3,7 +3,6 @@ package dominika.launcher;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.AlarmClock;
@@ -16,16 +15,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextClock;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.URI;
-
 import dominika.launcher.AllAppsGrid.AppsGridFragment;
+import dominika.launcher.DateTimeTemperature.DateChangeListener;
+import dominika.launcher.DateTimeTemperature.Weather;
 
 
 /**
@@ -48,7 +46,12 @@ public class OneFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    DateChangeListener dateChangeListener;
 
+    String city = "N/A";
+    String temperature = "N/A";
+
+    Weather weather;
 
     public OneFragment() {
         // Required empty public constructor
@@ -85,7 +88,11 @@ public class OneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_one, container, false);
+        final View view = inflater.inflate(R.layout.fragment_one, container, false);
+
+        dateChangeListener = new DateChangeListener(view);
+        dateChangeListener.startListening();
+        dateChangeListener.timer();
 
         // Listen to button which calls all apps
         ImageButton mBtnShowSettings = (ImageButton) view.findViewById(R.id.btnShowSettings);
@@ -93,15 +100,16 @@ public class OneFragment extends Fragment {
         ImageButton mBtnAllApps = (ImageButton) view.findViewById(R.id.btnAllApps);
         ImageButton mBtnShowMessenger = (ImageButton) view.findViewById(R.id.btnShowMessenger);
         ImageButton mBtnShowGallery = (ImageButton) view.findViewById(R.id.btnShowGallery);
-
-
         ImageButton mBtnShowMessageApp = (ImageButton) view.findViewById(R.id.btnShowMessageApp);
         ImageButton mBtnShowBrowser = (ImageButton) view.findViewById(R.id.btnShowBrowser);
         ImageButton mBtnShowCamera = (ImageButton) view.findViewById(R.id.btnShowCamera);
         ImageButton mBtnShowGmail = (ImageButton) view.findViewById(R.id.btnShowGmail);
         ImageButton mBtnShowCalendar = (ImageButton) view.findViewById(R.id.btnShowCalc);
 
-        LinearLayout mDateTimeWidget = (LinearLayout) view.findViewById(R.id.dateTimeWidget);
+        LinearLayout mDateTimeLayout = (LinearLayout) view.findViewById(R.id.datetime_layout);
+
+
+        ImageButton mBtnRefreshTemperature = (ImageButton) view.findViewById(R.id.btnRefreshTemperature);
 
         mBtnShowSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -249,10 +257,7 @@ public class OneFragment extends Fragment {
             }
         });
 
-
-
-
-        mDateTimeWidget.setOnClickListener(new View.OnClickListener() {
+        mDateTimeLayout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent ClockIntent = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
                 ClockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -260,7 +265,20 @@ public class OneFragment extends Fragment {
             }
         });
 
+        weather = new Weather(view, getContext());
 
+        mBtnRefreshTemperature.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Weather w = weather;
+                w.getWeather();
+            }
+        });
+
+        TextView cityTextView = (TextView) view.findViewById(R.id.city_textView);
+        cityTextView.setText(city);
+
+        TextView temperatureTextView = (TextView) view.findViewById(R.id.temperature_textView);
+        temperatureTextView.setText(temperature);
 
         // Inflate the layout for this fragment
         return view;
@@ -304,6 +322,23 @@ public class OneFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Turn off listening to date change
+        dateChangeListener.stopListening();
+
+        if (!weather.getTemperature().equals("N/A")) {
+            temperature = weather.getTemperature();
+        }
+        if (!weather.getCity().equals("N/A")) {
+            city = weather.getCity();
+        }
+
     }
 
     /**
