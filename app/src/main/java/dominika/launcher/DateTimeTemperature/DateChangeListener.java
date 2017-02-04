@@ -60,6 +60,10 @@ public class DateChangeListener {
 
     public static String getDayName(int day){
         switch(day){
+            case 0:
+                return  "Sob.";
+            case 1:
+                return "Nd.";
             case 2:
                 return "Pon.";
             case 3:
@@ -70,10 +74,8 @@ public class DateChangeListener {
                 return "Czw.";
             case 6:
                 return "Pt.";
-            case 0:
+            case 7:
                 return  "Sob.";
-            case 1:
-                return "Nd.";
         }
 
         return "";

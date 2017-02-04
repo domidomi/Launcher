@@ -32,10 +32,10 @@
                 <TextClock
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="-5sp"
                     android:textSize="@dimen/hour_text_size"
                     android:textColor="@android:color/white"
-                    style="@style/ShadowText"
-                    android:fontFamily="sans-serif-thin"
+                    style="@style/FontAndShadowStyle"
                     android:letterSpacing="0.1"
                     android:id="@+id/textClock" />
 
@@ -46,7 +46,6 @@
                     android:textSize="@dimen/date_text_size"
                     android:textColor="@android:color/white"
                     style="@style/ShadowText"
-                    android:textAllCaps="true"
                     android:id="@+id/date_textView" />
 
             </LinearLayout>

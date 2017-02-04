@@ -2,14 +2,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:id="@+id/two_fragment"
     tools:context="dominika.launcher.TwoFragment">
+
+    <RelativeLayout
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="110dp">
+
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/last_contacts" />
+
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:id="@+id/layout_folders"
+        android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:padding="1dp"
         android:orientation="vertical">
 

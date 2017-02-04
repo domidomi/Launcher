@@ -8,6 +8,11 @@
     <dimen name="menu_icon_size_dp">58dp</dimen>
     <dimen name="refresh_icon_size_dp">14dp</dimen>
     <dimen name="icon_text_size">7sp</dimen>
+
     <dimen name="hour_text_size">38sp</dimen>
     <dimen name="date_text_size">14sp</dimen>
+
+    <dimen name="contact_name_size">18sp</dimen>
+    <dimen name="contact_datetime_size">14sp</dimen>
+    <dimen name="contact_message_size">14sp</dimen>
 </resources>

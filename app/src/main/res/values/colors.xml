@@ -7,8 +7,9 @@
     <color name="colorAccent">#EACCF5</color>
 
     <color name="textShadowColor">#b5000000</color>
+    <color name="lightTextShadowColor">#9a1e1e1e</color>
     <color name="transparent">#00ffffff</color>
-    <color name="darkBackground">#96000000</color>
+    <color name="darkBackground">#67000000</color>
     <color name="transparentDarkColor">#AA000000</color>
 
     <color name="iconColor">#eeffffff</color>

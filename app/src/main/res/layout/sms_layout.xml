@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:id="@+id/sms_layout"
+    >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/darkBackground"
+        android:padding="5dp"
+        android:orientation="horizontal">
+
+        <!--Left section-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.9">
+
+            <!--First row-->
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:orientation="horizontal">
+
+                <!--Name-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    style="@style/ShadowText"
+                    android:maxLines="1"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="@dimen/contact_name_size"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/contact_name"/>
+
+                <!--Date-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/ShadowTextLight"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="@dimen/contact_datetime_size"
+                    android:textColor="@color/iconColor"
+                    android:id="@+id/contact_date"/>
+
+            </LinearLayout>
+
+            <!--Second row-->
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--Message-->
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:maxLines="1"
+                    style="@style/ShadowTextLight"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="@dimen/contact_message_size"
+                    android:textColor="@color/iconColor"
+
+                    android:id="@+id/contact_message"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--Right section-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.1">
+
+            <ImageView
+                android:background="@drawable/message_simple_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
