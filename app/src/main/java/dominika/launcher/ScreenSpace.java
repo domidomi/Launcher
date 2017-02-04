@@ -32,8 +32,6 @@ public class ScreenSpace {
         topMargin = getTopMargin(contextWrapper);
         bottomMargin = getBottomMargin(contextWrapper);
         setMargins(contextWrapper, topMargin, bottomMargin);
-
-        Log.d("calculate", "poszło");
     }
 
     public int getTopMargin(ContextWrapper contextWrapper) {

@@ -1,7 +1,9 @@
 package dominika.launcher.PaintNote;
 
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,10 +12,14 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +37,7 @@ import android.widget.RelativeLayout;
 
 import dominika.launcher.Constants;
 import dominika.launcher.CustomViewPager;
+import dominika.launcher.FragmentsBackgroundEffects;
 import dominika.launcher.MainActivity;
 import dominika.launcher.R;
 import dominika.launcher.ScreenSpace;
@@ -60,12 +67,15 @@ public class PaintNoteFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    FragmentsBackgroundEffects fragmentsBackgroundEffects;
+
     public Paint mPaint;
     RelativeLayout layout;
 
     DrawView drawView;
     DrawView savedDrawView = null;
     DrawView clearDrawing;
+    View view;
 
     public PaintNoteFragment() {
         // Required empty public constructor
@@ -117,7 +127,7 @@ public class PaintNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_paint_note, container, false);
+        view = inflater.inflate(R.layout.fragment_paint_note, container, false);
 
         Log.d("TWORZĘ WIDOK", "bang");
 
@@ -145,6 +155,7 @@ public class PaintNoteFragment extends Fragment {
         setButtons(view);
 
         // Inflate the layout for this fragment
+        //changeWallpaper(view, true);
 
         return view;
     }
@@ -208,6 +219,12 @@ public class PaintNoteFragment extends Fragment {
         }
     }
 
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -224,6 +241,79 @@ public class PaintNoteFragment extends Fragment {
         // remove view
         layout.removeView(drawView);
     }
+
+    // Gets current system wallpaper
+    private Drawable getWallpaper() {
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+
+        return wallpaperDrawable;
+    }
+
+    private void changeWallpaper(final View view, Boolean change) {
+        fragmentsBackgroundEffects = new FragmentsBackgroundEffects(getContext());
+        Bitmap screenBitmap = ((BitmapDrawable) getWallpaper()).getBitmap();
+        screenBitmap = fragmentsBackgroundEffects.blurBitmap(screenBitmap);
+        Drawable drawable = new BitmapDrawable(getResources(), screenBitmap);
+        RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_layout);
+        layout.setBackgroundDrawable(drawable);
+
+        /*if (change) {
+            fragmentsBackgroundEffects = new FragmentsBackgroundEffects(getContext());
+            Bitmap screenBitmap = fragmentsBackgroundEffects.getScreenShot(view.findViewById(R.id.activity_main));
+
+            loadBackground loader = new loadBackground(new taskComplete() {
+                @Override
+                public void complete(Bitmap resultBitmap) {
+                    if (view.getVisibility() == View.VISIBLE) {
+                        // Its visible
+                        Drawable drawable = new BitmapDrawable(getResources(), resultBitmap);
+                        //drawable.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        view.setBackground(drawable);
+                    } else {
+                        // Either gone or invisible
+                    }
+                }
+            });
+            loader.execute(screenBitmap);
+        }*/
+    }
+
+
+
+    public class loadBackground extends AsyncTask<Bitmap, Void, Bitmap> {
+
+        taskComplete done;
+
+        public loadBackground(taskComplete task) {
+            done = task;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Bitmap... params) {
+            // Calculate how much of bitmap we have to cut
+            ContextWrapper contextWrapper = new ContextWrapper(getContext());
+            ScreenSpace mScreenSpace = new ScreenSpace(getActivity());
+
+            Integer marginBottom = mScreenSpace.getBottomMargin(contextWrapper);
+            Integer marginTop =  mScreenSpace.getTopMargin(contextWrapper);
+
+            return fragmentsBackgroundEffects.cropBitmap(params[0], marginTop, marginBottom);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            done.complete(bitmap);
+            super.onPostExecute(bitmap);
+
+        }
+    }
+
+    interface taskComplete{
+        void complete (Bitmap resultBitmap);
+    }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

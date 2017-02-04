@@ -93,6 +93,7 @@ public class OneFragment extends Fragment {
         dateChangeListener = new DateChangeListener(view);
         dateChangeListener.startListening();
         dateChangeListener.timer();
+        dateChangeListener.setDate();
 
         // Listen to button which calls all apps
         ImageButton mBtnShowSettings = (ImageButton) view.findViewById(R.id.btnShowSettings);
@@ -109,7 +110,7 @@ public class OneFragment extends Fragment {
         LinearLayout mDateTimeLayout = (LinearLayout) view.findViewById(R.id.datetime_layout);
 
 
-        ImageButton mBtnRefreshTemperature = (ImageButton) view.findViewById(R.id.btnRefreshTemperature);
+        LinearLayout mBtnRefreshTemperature = (LinearLayout) view.findViewById(R.id.temperature_layout);
 
         mBtnShowSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

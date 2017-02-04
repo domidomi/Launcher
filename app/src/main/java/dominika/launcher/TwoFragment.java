@@ -1,29 +1,52 @@
 package dominika.launcher;
 
+import android.app.Service;
+import android.app.WallpaperManager;
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.SmsMessage;
+import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import dominika.launcher.AllAppsGrid.AppsGridFragment;
 import dominika.launcher.AppsByCategory.CategoriesGridFragment;
-import dominika.launcher.AppsByCategory.GridElementAdapter;
+import dominika.launcher.LastContacts.Call;
+import dominika.launcher.LastContacts.CallManager;
+import dominika.launcher.LastContacts.Sms;
+import dominika.launcher.LastContacts.SmsManager;
 
 
 /**
@@ -48,9 +71,11 @@ public class TwoFragment extends Fragment {
 
     View view;
 
-    private OnFragmentInteractionListener mListener;
+    static List<Sms> listOfSms = new ArrayList<Sms>();
+    static List<Call> listOfCalls= new ArrayList<Call>();
 
-    private GridView horizontalGridView;
+    FragmentsBackgroundEffects fragmentsBackgroundEffects;
+    private OnFragmentInteractionListener mListener;
 
     public TwoFragment() {
         // Required empty public constructor
@@ -81,6 +106,8 @@ public class TwoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        callsFilter.addAction("android.intent.action.NEW_OUTGOING_CALL");
     }
 
     @Override
@@ -139,24 +166,100 @@ public class TwoFragment extends Fragment {
 
         });
 
-   /*     view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-                        view.findViewById(R.id.title_horizontalScrollView).setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),
-                                "NIby widoczne", Toast.LENGTH_SHORT).show();
-                        return true;
+        SmsManager.getListOfSms(getActivity(), view, getContext());
+        CallManager.getListOfCalls(getActivity(), view, getContext());
 
+        view.invalidate();
+
+        //changeWallpaper(view, true);
+
+        return view;
+    }
+
+    private IntentFilter filter =
+            new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+
+    private BroadcastReceiver smsReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+
+            if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
+                Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
+                SmsMessage[] msgs = null;
+                String msgFrom = "";
+                String msgBody = "";
+                Long msgDate = 0L;
+
+                if (bundle != null){
+                    //---retrieve the SMS message received---
+                    try{
+                        Object[] pdus = (Object[]) bundle.get("pdus");
+
+                        msgs = new SmsMessage[pdus.length];
+                        for(int i=0; i<msgs.length; i++){
+                            msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                            msgFrom = msgs[i].getOriginatingAddress();
+                            msgDate = msgs[i].getTimestampMillis();
+                            msgBody += msgs[i].getMessageBody();
+                        }
+                        updateListOfSms(msgFrom, msgDate, msgBody);
+                        //setLastSmsTextView(msgBody+";"+msg_from);
+                    } catch(Exception e){
+                        Log.d("Exception caught",e.getMessage());
+                    }
 
                 }
-
-                return false;
             }
-        });
-*/
-        return view;
+        }
+    };
+
+    private IntentFilter callsFilter =
+            new IntentFilter("android.intent.action.PHONE_STATE");
+
+    private BroadcastReceiver callReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try{
+                String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+
+                if(intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
+                    Log.d("Udate", "1");
+                    updateListOfCalls();
+                }
+
+                if(state.equals(TelephonyManager.EXTRA_STATE_RINGING)){
+                    Log.d("Udate", "2");
+                    updateListOfCalls();
+                }
+
+                if(state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
+                    Log.d("Udate", "3");
+                    updateListOfCalls();
+                }
+
+                if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)){
+                    Log.d("Udate", "4");
+                    updateListOfCalls();
+                }
+            }
+            catch(Exception e){e.printStackTrace();}
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(smsReceiver, filter);
+        getActivity().registerReceiver(callReceiver, callsFilter);
+    }
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(smsReceiver);
+        getActivity().unregisterReceiver(callReceiver);
+        super.onPause();
     }
 
     private void loadFolder(String category) {
@@ -224,6 +327,13 @@ public class TwoFragment extends Fragment {
         mListener = null;
     }
 
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -238,5 +348,209 @@ public class TwoFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public static List<Sms> getListOfSms() {
+        return listOfSms;
+    }
+
+    public static void setListOfSms(List<Sms> listOfSms) {
+        TwoFragment.listOfSms = listOfSms;
+    }
+
+    public static void setListOfCalls(List<Call> listOfCalls) {
+        TwoFragment.listOfCalls = listOfCalls;
+    }
+
+    public void updateListOfSms(String msgFrom, Long dateInMilis, String msgBody) {
+        Sms objSms = new Sms();
+        objSms.setAddress(msgFrom);
+        objSms.setPerson(SmsManager.getContactName(objSms.getAddress(), getContext()));
+        objSms.setMsg(msgBody);
+        objSms.setTime(dateInMilis.toString());
+        objSms.setTime(SmsManager.convertDate(objSms.getTime(),"HH:mm dd/MM"));
+
+        listOfSms.add(0, objSms);
+
+        for (int i =1; i < listOfSms.size(); i++) {
+            if (listOfSms.get(i).getAddress().equals(objSms.getAddress())) {
+                listOfSms.remove(i);
+            }
+        }
+
+        if (listOfSms.size() > 3) {
+            listOfSms.remove(listOfSms.size()-1);
+        }
+
+        SmsManager.setListOfSmsView(listOfSms, getView(), getContext());
+    }
+
+    public void updateListOfCalls() {
+        CallManager.getListOfCalls(getActivity(), getView(), getContext());
+    }
+
+
+    // Gets current system wallpaper
+    private Drawable getWallpaper() {
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+
+        return wallpaperDrawable;
+    }
+
+    private void changeWallpaper(View view, Boolean change) {
+
+        final View v = view;
+
+        if (change == true) {
+            final ImageView imageView = (ImageView) v.findViewById(R.id.fragment_wallpaper);
+            imageView.setVisibility(View.VISIBLE);
+
+            fragmentsBackgroundEffects = new FragmentsBackgroundEffects(getContext());
+            Bitmap screenBitmap = ((BitmapDrawable) getWallpaper()).getBitmap();
+
+            loadBackground loader = new loadBackground(new taskComplete() {
+                @Override
+                public void complete(Bitmap resultBitmap) {
+                    if (v.getVisibility() == View.VISIBLE) {
+                        // Its visible
+                        Drawable drawable = new BitmapDrawable(getResources(), resultBitmap);
+                        //drawable.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        v.setBackground(drawable);
+                    } else {
+                        // Either gone or invisible
+                    }
+                }
+            });
+            loader.execute(screenBitmap);
+        } else {
+            ImageView imageView = (ImageView) v.findViewById(R.id.fragment_wallpaper);
+            imageView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            SmsManager.getListOfSms(getActivity(), getView(), getContext());
+            CallManager.getListOfCalls(getActivity(), getView(), getContext());
+            //changeWallpaper(getView(), true);
+        } else {
+            //changeWallpaper(getView(), false);
+        }
+    }
+
+
+    public class loadBackground extends AsyncTask<Bitmap, Void, Bitmap> {
+
+        taskComplete done;
+
+        public loadBackground(taskComplete task) {
+            done = task;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Bitmap... params) {
+            // Calculate how much of bitmap we have to cut
+            ContextWrapper contextWrapper = new ContextWrapper(getContext());
+            ScreenSpace mScreenSpace = new ScreenSpace(getActivity());
+
+            Integer marginBottom = mScreenSpace.getBottomMargin(contextWrapper);
+            Integer marginTop =  mScreenSpace.getTopMargin(contextWrapper);
+
+            return fragmentsBackgroundEffects.cropBitmap(params[0], marginTop, marginBottom);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            done.complete(bitmap);
+            super.onPostExecute(bitmap);
+
+            Drawable d = new BitmapDrawable(getResources(), bitmap);
+            final ImageView imageView = (ImageView) view.findViewById(R.id.fragment_wallpaper);
+            imageView.setImageDrawable(d);
+        }
+    }
+
+    interface taskComplete{
+        void complete (Bitmap resultBitmap);
+    }
+
+
+    /*public class CallReceiver extends BroadcastReceiver {
+
+        private static final String TAG = "PhoneStatReceiver";
+
+        private boolean incomingFlag = false;
+
+        private String incoming_number = null;
+
+
+        @Override
+
+        public void onReceive(Context context, Intent intent) {
+
+            if(intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)){
+
+                incomingFlag = false;
+
+                String phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+
+                CallManager.getListOfCalls(getActivity(), getView(), getContext());
+
+            } else{
+
+                TelephonyManager tm = (TelephonyManager)context.getSystemService(Service.TELEPHONY_SERVICE);
+
+
+
+                switch (tm.getCallState()) {
+
+                    case TelephonyManager.CALL_STATE_RINGING:
+
+                        incomingFlag = true;
+
+                        incoming_number = intent.getStringExtra("incoming_number");
+
+
+                        Log.i(TAG, "incoming RINGING :"+ incoming_number);
+
+                        CallManager.getListOfCalls(getActivity(), getView(), getContext());
+
+                        break;
+
+                    case TelephonyManager.CALL_STATE_OFFHOOK:
+
+                        if(incomingFlag){
+
+                            Log.i(TAG, "incoming ACCEPT :"+ incoming_number);
+
+                            CallManager.getListOfCalls(getActivity(), getView(), getContext());
+                        }
+
+                        break;
+
+
+
+                    case TelephonyManager.CALL_STATE_IDLE:
+
+                        if(incomingFlag){
+
+                            Log.i(TAG, "incoming IDLE");
+
+                            CallManager.getListOfCalls(getActivity(), getView(), getContext());
+                        }
+
+                        break;
+
+                }
+
+            }
+
+        }
+
+    }*/
+
+
 
 }
