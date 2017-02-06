@@ -28,7 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/drawing_layout"
-        android:background="@color/transparentDarkColor" >
+        android:background="@color/transparentDarkColor"
+        android:layout_above="@+id/btnClearDrawing">
     </RelativeLayout>
 
     <ImageButton

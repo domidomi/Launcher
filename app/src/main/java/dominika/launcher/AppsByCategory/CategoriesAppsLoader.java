@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,6 +31,8 @@ import dominika.launcher.MainActivity;
 import dominika.launcher.SharedPreferencesHelper.SharedPreferencesAppModel;
 import dominika.launcher.SharedPreferencesHelper.SharedPreferencesHelper;
 import dominika.launcher.TwoFragment;
+
+import static android.content.Context.POWER_SERVICE;
 
 /**
  * Created by Domi on 25.10.2016.
@@ -49,11 +54,19 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
     ArrayList<AppModel> appsFromCategory;
     ArrayList<AppModel> appsToCheckCategory;
     SharedPreferencesHelper sharedPreferencesHelper;
+    dominika.launcher.DateTimeTemperature.AsyncResponse mydelegate;
+    CategoryHttpHelper helper;
+    PowerManager powerManager;
+    PowerManager.WakeLock wakeLock;
 
     public CategoriesAppsLoader(Context context) {
         super(context);
         this.clickedFolder = TwoFragment.clickedFolder;
         mPackageManager = context.getPackageManager();
+    }
+
+    public void setDelegate(dominika.launcher.DateTimeTemperature.AsyncResponse delegate){
+        this.mydelegate = delegate;
     }
 
     @Override
@@ -189,15 +202,25 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
         return appsList;
     }
 
+    public void turnOffWakeLock() {
+        if(wakeLock != null){
+            wakeLock.release();
+        }
+    }
 
 
     private void searchForAllCategories() {
 
+        powerManager = (PowerManager) getContext().getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK,
+                "MyWakelockTag");
+        Log.d("Włączam", "wake lock");
+        wakeLock.acquire();
+
         // Creating helper and passing all apps list
-        CategoryHttpHelper helper = new CategoryHttpHelper(this);
+        helper = new CategoryHttpHelper(this);
 
         helper.delegate = this;
-
         // Execute retrieving a category for each app
         helper.execute();
     }
@@ -206,6 +229,9 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
     public void processFinish(String output){
         //Here you will receive the result fired from async class
         //of onPostExecute(result) method.
+
+        wakeLock.release();
+        Log.d("Wyłączam", "wake lock");
 
         // If the known list is empty add all apps - it will run the first time when launcher is running
         if (MainActivity.mAppsList.isEmpty()) {
@@ -340,9 +366,19 @@ public class CategoriesAppsLoader extends AsyncTaskLoader<ArrayList<AppModel>> i
         cancelLoad();
     }
 
+    public void cancelRunningThings() {
+    }
+
     @Override
     public void onCanceled(ArrayList<AppModel> apps) {
         super.onCanceled(apps);
+        Log.d("ASYNC", "DELEGATE2");
+        if(mydelegate != null){
+            Log.d("ASYNC", "DELEGATE1");
+            mydelegate.processFinish(new JSONObject());
+        }
+        Log.d("Wyłączam", " helper");
+        turnOffWakeLock();
 
         // If needed release the resources associated with 'apps'.
         onReleaseResources(apps);

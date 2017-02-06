@@ -2,10 +2,12 @@ package dominika.launcher;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -110,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
         CategoryAppsModel mCategoryAppsModel = new CategoryAppsModel();
         mCategoryAppsModel.showListOfCategories();
 
-
         mAppsList = new ArrayList<AppModel>();
     }
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
         adapter.addFragment(new PaintNoteFragment(), "PAINT");
         adapter.addFragment(new OneFragment(), "ONE");
         adapter.addFragment(new TwoFragment(), "TWO");
-        adapter.addFragment(new ThreeFragment(), "THREE");
+        //adapter.addFragment(new ThreeFragment(), "THREE");
         viewPager.setAdapter(adapter);
 
         viewPager.setCurrentItem(1);
@@ -217,6 +218,8 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
             permissionsNeeded.add("Lista połączeń");
         if (!addPermission(permissionsList, android.Manifest.permission.CAMERA))
             permissionsNeeded.add("Aparat");
+        if (!addPermission(permissionsList, android.Manifest.permission.WAKE_LOCK))
+            permissionsNeeded.add("Podtrzymanie działania w tle");
 
         if (permissionsList.size() == 0) {
             continueLoading();
@@ -230,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
             // If permissions on newer systems
             if (permissionsNeeded.size() > 0) {
                 // Need Rationale
-                String message = "You need to grant access to " + permissionsNeeded.get(0);
+                String message = "Musisz zapewnić dostęp do: " + permissionsNeeded.get(0);
                 for (int i = 1; i < permissionsNeeded.size(); i++)
                     message = message + ", " + permissionsNeeded.get(i);
                 showMessageOKCancel(message,
@@ -262,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
         new AlertDialog.Builder(MainActivity.this)
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Wyjdź", null)
                 .create()
                 .show();
     }
@@ -280,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
                 perms.put(android.Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
                 perms.put(android.Manifest.permission.CALL_PHONE, PackageManager.PERMISSION_GRANTED);
                 perms.put(android.Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                perms.put(android.Manifest.permission.WAKE_LOCK, PackageManager.PERMISSION_GRANTED);
 
                 // Fill with results
                 for (int i = 0; i < permissions.length; i++)
@@ -290,13 +294,14 @@ public class MainActivity extends AppCompatActivity implements PaintNoteFragment
                         && perms.get(android.Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED
                         && perms.get(android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(android.Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
                         ) {
                     // All Permissions Granted
                     continueLoading();
                     return;
                 } else {
                     // Permission Denied
-                    Toast.makeText(this, "Some Permission is Denied", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Któreś ze zezwoleń zostało zablokowane", Toast.LENGTH_SHORT)
                             .show();
                     return;
                 }

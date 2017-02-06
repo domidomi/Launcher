@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import dominika.launcher.R;
 import dominika.launcher.TwoFragment;
@@ -86,6 +87,15 @@ public final class CallManager {
                         objCall.setDate(convertDate(objCall.getDate(), "HH:mm dd/MM"));
                         objCall.setDuration(cursor.getString(cursor.getColumnIndexOrThrow("duration")));
 
+                        long sec = (long) Integer.parseInt(objCall.getDuration());
+
+                        String duration = String.format("%dmin. %ds",
+                                TimeUnit.SECONDS.toMinutes(sec),
+                                TimeUnit.SECONDS.toSeconds(sec) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(sec))
+                        );
+                        objCall.setDuration(duration);
+
                         boolean contains = false;
                         for (int j = 0; j < tmp.size(); j++) {
                             if (tmp.get(j).getNumber().equals(objCall.getNumber()) || tmp.get(j).getName().equals(objCall.getName())) {
@@ -121,6 +131,11 @@ public final class CallManager {
     public static String convertDate(String dateInMilliseconds, String dateFormat) {
         android.text.format.DateFormat df = new android.text.format.DateFormat();
         return df.format(dateFormat, Long.parseLong(dateInMilliseconds)).toString();
+    }
+
+    public static String convertTime(String timeInMilliseconds, String timeFormat) {
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        return df.format(timeFormat, Long.parseLong(timeInMilliseconds)).toString();
     }
 
     public static void setListOfCallsView(final List<Call> listOfCalls, View view, final Context context) {
@@ -214,7 +229,7 @@ public final class CallManager {
 
                     contactName.setText(call.getName());
                     contactDate.setText(call.getDate());
-                    contactMessage.setText("rozmowa, "+ call.getDuration());
+                    contactMessage.setText(call.getDuration());
                 }
             }
 
