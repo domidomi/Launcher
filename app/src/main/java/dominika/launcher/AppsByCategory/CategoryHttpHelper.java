@@ -3,6 +3,7 @@ package dominika.launcher.AppsByCategory;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,7 +31,7 @@ import static android.content.ContentValues.TAG;
  * Created by Domi on 28.11.2016.
  */
 
-public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel>>{
+public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel>> {
 
     ArrayList<AppModel> appsList;
 
@@ -46,7 +47,24 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
 
     public CategoryHttpHelper(CategoriesAppsLoader loader) {
         this.loader = loader;
+    }
 
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        Log.d("Dupa", "wylacono");
+    }
+
+    @Override
+    protected void onPreExecute(){
+        this.loader.setDelegate(new dominika.launcher.DateTimeTemperature.AsyncResponse() {
+            @Override
+            public void processFinish(JSONObject output) {
+                Log.d("ASYNC", "DELEGATE");
+                CategoryHttpHelper.this.cancel(true);
+            }
+        });
     }
 
     @Override
@@ -58,10 +76,68 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
 
             try {
                 URL url = new URL("https://play.google.com/store/apps/details?id=" + appsList.get(i).getAppInfo().packageName + "&hl=en");
+                /*JSOUP*/
+                Document doc = Jsoup.connect(url.toString()).get();
+                Element element = doc.select("span[itemprop = genre]").first();
+                category = element.text();
+                Log.d("Genre = ", category);
+
+                appsList.get(i).setmCategory(category);
+                continue;
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                Log.d("Catch: ", "UnsupportedEncodingException");
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+                Log.d("Catch: ", "ProtocolException");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.d("Catch: ", "MalformedURLException");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("Catch: ", "IOException");
+            } catch (Exception anyError) {
+                anyError.printStackTrace();
+                Log.d("Catch: ", "some error");
+            }
+
+            // Will be set to null if try didn't work
+            appsList.get(i).setmCategory(category);
+
+        }
+
+        return appsList;
+    }
+
+
+    @Override
+    protected void onPostExecute(ArrayList<AppModel> appModels) {
+        super.onPostExecute(appModels);
+
+        Log.d("Skończył szukanie: ", "HTTP HELPER");
+        loader.setAppsList(appModels);
+
+        delegate.processFinish("done");
+    }
+
+
+
+
+
+    /*@Override
+    protected ArrayList<AppModel> doInBackground(Void... arg0) {
+        appsList = loader.getAppsList();
+        // For each app - get the category and store it in variable
+        for (int i=0; i < appsList.size(); i++) {
+            String category = "Other";
+
+            try {
+                URL url = new URL("https://play.google.com/store/apps/details?id=" + appsList.get(i).getAppInfo().packageName + "&hl=en");
                 Log.d("Otwieram połączenie ", url.toString());
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setReadTimeout(10000 /* milliseconds */);
-                connection.setConnectTimeout(15000 /* milliseconds */);
+                connection.setReadTimeout(10000 *//* milliseconds *//*);
+                connection.setConnectTimeout(15000 *//* milliseconds *//*);
                 int status = connection.getResponseCode();
 
                 if(status != HttpURLConnection.HTTP_OK) {
@@ -70,7 +146,7 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
                     continue;
                 }
 
-                /* JSOUP */
+                *//* JSOUP *//*
                 Document doc = Jsoup.connect(url.toString()).get();
                 Element element = doc.select("span[itemprop = genre]").first();
                 category = element.text();
@@ -110,5 +186,5 @@ public class CategoryHttpHelper extends AsyncTask<Void, Void, ArrayList<AppModel
         loader.setAppsList(appModels);
 
         delegate.processFinish("done");
-    }
+    }*/
 }

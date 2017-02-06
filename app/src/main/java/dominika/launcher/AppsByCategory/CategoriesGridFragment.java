@@ -43,6 +43,8 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
     AppListAdapter mAppListAdapter;
     int category;
     FragmentsBackgroundEffects fragmentsBackgroundEffects;
+    loadBackground loader;
+    Loader<ArrayList<AppModel>> appsLoader;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
         fragmentsBackgroundEffects = new FragmentsBackgroundEffects(getContext());
         Bitmap screenBitmap = fragmentsBackgroundEffects.getScreenShot(getActivity().findViewById(R.id.activity_main));
 
-        loadBackground loader = new loadBackground(new taskComplete() {
+        loader = new loadBackground(new taskComplete() {
             @Override
             public void complete(Bitmap resultBitmap) {
                 if (CategoriesGridFragment.this.getView().getVisibility() == View.VISIBLE) {
@@ -92,10 +94,14 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
 
     @Override
     public void onDestroyView() {
+        loader.cancel(true);
         super.onDestroyView();
         MainActivity activity = (MainActivity) getActivity();
         CustomViewPager vp = (CustomViewPager) activity.getViewPager();
         vp.setPagingEnabled(true);
+
+        appsLoader.cancelLoad();
+        Log.d("Wyłączam", " apps loader");
     }
 
     public void startLoading() {
@@ -107,8 +113,12 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
     @Override
     public Loader<ArrayList<AppModel>> onCreateLoader(int id, Bundle bundle) {
         // Load all installed apps
-        return new CategoriesAppsLoader(getActivity());
+        appsLoader = new CategoriesAppsLoader(getActivity());
+
+        return appsLoader;
     }
+
+
 
     @Override
     public void onLoadFinished(Loader<ArrayList<AppModel>> loader, ArrayList<AppModel> apps) {
@@ -121,6 +131,7 @@ public class CategoriesGridFragment extends GridFragment implements android.supp
             setGridShownNoAnimation(true);
         }
     }
+
 
     @Override
     public void onLoaderReset(Loader<ArrayList<AppModel>> loader) {
