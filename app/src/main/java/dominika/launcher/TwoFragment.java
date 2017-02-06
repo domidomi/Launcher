@@ -225,22 +225,18 @@ public class TwoFragment extends Fragment {
                 String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
                 if(intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
-                    Log.d("Udate", "1");
                     updateListOfCalls();
                 }
 
                 if(state.equals(TelephonyManager.EXTRA_STATE_RINGING)){
-                    Log.d("Udate", "2");
                     updateListOfCalls();
                 }
 
                 if(state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
-                    Log.d("Udate", "3");
                     updateListOfCalls();
                 }
 
                 if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)){
-                    Log.d("Udate", "4");
                     updateListOfCalls();
                 }
             }
